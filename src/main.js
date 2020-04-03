@@ -1,5 +1,7 @@
 'use strict';
 
+const CARDS_COUNT = 5;
+
 const getProfileMarkup = () => {
   return (
     `<section class="header__profile profile">
@@ -111,7 +113,7 @@ const filmsList = document.querySelector(`.films-list`);
 render(filmsList, getLoadMoreButtonMarkup());
 
 const filmsListContainer = document.querySelector(`.films-list__container`);
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < CARDS_COUNT; i++) {
   render(filmsListContainer, getFilmCardMarkup());
 }
 
