@@ -1,5 +1,3 @@
-'use strict';
-
 const CARDS_COUNT = 5;
 
 const getProfileMarkup = () => {
