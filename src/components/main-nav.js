@@ -1,4 +1,4 @@
-export const getMainNavMarkup = () => {
+const getMainNavMarkup = () => {
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">
@@ -11,3 +11,5 @@ export const getMainNavMarkup = () => {
     </nav>`
   );
 };
+
+export default getMainNavMarkup;

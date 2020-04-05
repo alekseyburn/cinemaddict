@@ -1,4 +1,4 @@
-export const getSortMarkup = () => {
+const getSortMarkup = () => {
   return (
     `<ul class="sort">
       <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -7,3 +7,5 @@ export const getSortMarkup = () => {
     </ul>`
   );
 };
+
+export default getSortMarkup;

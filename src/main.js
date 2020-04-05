@@ -1,11 +1,11 @@
-import {getProfileMarkup} from './components/profile';
-import {getMainNavMarkup} from './components/main-nav';
-import {getSortMarkup} from './components/sort';
-import {getFilmsMainMarkup} from './components/films-main';
-import {getFilmsListMarkup} from './components/films-list';
-import {getFilmsListExtraMarkup} from './components/films-list-extra';
-import {getLoadMoreButtonMarkup} from './components/load-more';
-import {getFilmCardMarkup} from './components/film-card';
+import getProfileMarkup from './components/profile';
+import getMainNavMarkup from './components/main-nav';
+import getSortMarkup from './components/sort';
+import getFilmsMainMarkup from './components/films-main';
+import getFilmsListMarkup from './components/films-list';
+import getFilmsListExtraMarkup from './components/films-list-extra';
+import getLoadMoreButtonMarkup from './components/load-more';
+import getFilmCardMarkup from './components/film-card';
 
 const CARDS_COUNT = 5;
 

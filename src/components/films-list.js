@@ -1,4 +1,4 @@
-export const getFilmsListMarkup = () => {
+const getFilmsListMarkup = () => {
   return (
     `<section class="films-list">
       <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
@@ -7,3 +7,5 @@ export const getFilmsListMarkup = () => {
     </section>`
   );
 };
+
+export default getFilmsListMarkup;

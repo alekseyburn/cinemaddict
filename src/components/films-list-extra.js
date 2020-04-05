@@ -1,4 +1,4 @@
-export const getFilmsListExtraMarkup = (title) => {
+const getFilmsListExtraMarkup = (title) => {
   return (
     `<section class="films-list--extra">
       <h2 class="films-list__title">${title}</h2>
@@ -8,3 +8,5 @@ export const getFilmsListExtraMarkup = (title) => {
     </section>`
   );
 };
+
+export default getFilmsListExtraMarkup;

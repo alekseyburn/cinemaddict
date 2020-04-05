@@ -1,4 +1,4 @@
-export const getProfileMarkup = () => {
+const getProfileMarkup = () => {
   return (
     `<section class="header__profile profile">
       <p class="profile__rating">Movie Buff</p>
@@ -6,3 +6,5 @@ export const getProfileMarkup = () => {
     </section>`
   );
 };
+
+export default getProfileMarkup;
