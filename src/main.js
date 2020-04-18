@@ -12,6 +12,10 @@ import {generateFilms} from './mocks/films';
 // import {render}
 
 const CARDS_COUNT = 18;
+const CARDS_ON_START_COUNT = 5;
+const CARDS_ON_CLICK_COUNT = 5;
+
+
 const films = generateFilms(CARDS_COUNT);
 
 
@@ -35,10 +39,25 @@ render(filmsMain, getFilmsListExtraMarkup(`Most commented`));
 const filmsList = document.querySelector(`.films-list`);
 render(filmsList, getLoadMoreButtonMarkup());
 
+
 const filmsListContainer = document.querySelector(`.films-list__container`);
-for (let i = 0; i < CARDS_COUNT; i++) {
-  render(filmsListContainer, getFilmCardMarkup(films[i]));
-}
+let cardsShownCount = CARDS_ON_START_COUNT;
+
+films.slice(0, cardsShownCount)
+  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film), `beforeend`));
+
+const loadMoreButton = document.querySelector(`.films-list__show-more`);
+loadMoreButton.addEventListener(`click`, () => {
+  const prevCardsShownCount = cardsShownCount;
+  cardsShownCount += CARDS_ON_CLICK_COUNT;
+  films.slice(prevCardsShownCount, cardsShownCount)
+  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film), `beforeend`));
+
+  if (cardsShownCount >= films.length) {
+    loadMoreButton.remove();
+  }
+});
+
 
 // Obviously temporary solution
 const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
