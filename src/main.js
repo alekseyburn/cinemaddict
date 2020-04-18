@@ -7,7 +7,13 @@ import getFilmsListExtraMarkup from './components/films-list-extra';
 import getLoadMoreButtonMarkup from './components/load-more';
 import getFilmCardMarkup from './components/film-card';
 
-const CARDS_COUNT = 5;
+import {generateFilms} from './mocks/films';
+
+// import {render}
+
+const CARDS_COUNT = 18;
+const films = generateFilms(CARDS_COUNT);
+
 
 const render = (parent, markup, place = `beforeend`) => {
   parent.insertAdjacentHTML(place, markup);
@@ -31,7 +37,7 @@ render(filmsList, getLoadMoreButtonMarkup());
 
 const filmsListContainer = document.querySelector(`.films-list__container`);
 for (let i = 0; i < CARDS_COUNT; i++) {
-  render(filmsListContainer, getFilmCardMarkup());
+  render(filmsListContainer, getFilmCardMarkup(films[i]));
 }
 
 // Obviously temporary solution
