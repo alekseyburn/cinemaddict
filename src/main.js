@@ -43,6 +43,6 @@ for (let i = 0; i < CARDS_COUNT; i++) {
 // Obviously temporary solution
 const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
 for (let container of filmsExtraListsContainers) {
-  render(container, getFilmCardMarkup());
-  render(container, getFilmCardMarkup());
+  render(container, getFilmCardMarkup(films[0]));
+  render(container, getFilmCardMarkup(films[1]));
 }
