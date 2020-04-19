@@ -1,3 +1,5 @@
+import {formatRuntime} from '../utils/time';
+
 const getFilmCardMarkup = (film) => {
   const {
     name,
@@ -6,6 +8,7 @@ const getFilmCardMarkup = (film) => {
     rating,
     genres,
     releaseDate,
+    runtime,
   } = film;
 
   const formatedDescription = description.length > 140 ? `${description.slice(0, 138)}…` : description;
@@ -16,7 +19,7 @@ const getFilmCardMarkup = (film) => {
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${releaseDate.getFullYear()}</span>
-        <span class="film-card__duration">1h 55m</span>
+        <span class="film-card__duration">${formatRuntime(runtime)}</span>
         <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="./images/posters/${poster}" alt="${name}" class="film-card__poster">

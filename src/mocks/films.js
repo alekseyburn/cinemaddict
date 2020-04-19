@@ -6,7 +6,8 @@ import {
   getRandomFullName,
   generateArray,
 } from '../utils/random';
-import {COUNTRIES} from '../mocks/common';
+import {COUNTRIES} from './common';
+import {generateComment} from './comments';
 
 const FILMS = [
   {
@@ -83,7 +84,8 @@ export const generateFilm = () => {
     director: getRandomFullName,
     writers: generateArray(getRandomFullName, getRandomNumber(1, 3)),
     actors: generateArray(getRandomFullName, getRandomNumber(3, 9)),
-    // runtime,
+    runtime: getRandomNumber(45, 210),
     country: getRandomArrayItem(COUNTRIES),
+    comments: generateArray(generateComment, getRandomNumber(0, 5)),
   };
 };
