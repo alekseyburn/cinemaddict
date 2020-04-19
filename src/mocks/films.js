@@ -1,4 +1,4 @@
-import {getRandomNumber, getArrayOfRandomElements} from '../utils/random';
+import {getRandomNumber, getArrayOfRandomElements, getRandomArrayItem} from '../utils/random';
 
 const FILMS = [
   {
@@ -50,6 +50,14 @@ const FILM_GENRES = [
   `Other`,
 ];
 
+const MPAA_RATING = [
+  `G`,
+  `PG`,
+  `PG-13`,
+  `R`,
+  `NC-17`,
+];
+
 
 const generateFilm = () => {
   const filmNumber = getRandomNumber(0, FILMS.length - 1);
@@ -60,6 +68,7 @@ const generateFilm = () => {
     description: getArrayOfRandomElements(FILM_DESCRIPTIONS, getRandomNumber(1, 5)).join(`. `),
     rating: getRandomNumber(1, 99) / 10,
     genres: getArrayOfRandomElements(FILM_GENRES, getRandomNumber(1, 3)),
+    mpaaRating: getRandomArrayItem(MPAA_RATING),
   };
 };
 
