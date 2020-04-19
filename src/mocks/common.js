@@ -100,3 +100,36 @@ export const NAMES = [
   `Thomas`,
   `Leo`,
 ];
+
+export const SURNAMES = [
+  `Smith`,
+  `Johnson`,
+  `Williams`,
+  `Brown`,
+  `Jones`,
+  `Miller`,
+  `Davis`,
+  `Garcia`,
+  `Rodriguez`,
+  `Wilson`,
+];
+
+export const COUNTRIES = [
+  `United States`,
+  `United Kingdom`,
+  `China`,
+  `France`,
+  `Japan`,
+  `Germany`,
+  `Republic of Korea`,
+  `Canada`,
+  `Australia`,
+  `India`,
+  `New`,
+  `Hong`,
+  `Italy`,
+  `Spain`,
+  `Belgium`,
+  `Russian Federation`,
+  `Mexico`,
+];

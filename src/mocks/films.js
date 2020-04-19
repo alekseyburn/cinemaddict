@@ -1,4 +1,12 @@
-import {getRandomNumber, getArrayOfRandomElements, getRandomArrayItem} from '../utils/random';
+import {
+  getRandomNumber,
+  getShuffledArray,
+  getRandomArrayItem,
+  getRandomDate,
+  getRandomFullName,
+  generateArray,
+} from '../utils/random';
+import {COUNTRIES} from '../mocks/common';
 
 const FILMS = [
   {
@@ -31,7 +39,8 @@ const FILMS = [
   },
 ];
 
-const FILM_DESCRIPTIONS = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`.split(`. `);
+const FILM_DESCRIPTIONS = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`
+  .split(`. `);
 
 const FILM_GENRES = [
   `Action`,
@@ -59,22 +68,22 @@ const MPAA_RATING = [
 ];
 
 
-const generateFilm = () => {
+export const generateFilm = () => {
   const filmNumber = getRandomNumber(0, FILMS.length - 1);
 
   return {
     name: FILMS[filmNumber].name,
     poster: FILMS[filmNumber].poster,
-    description: getArrayOfRandomElements(FILM_DESCRIPTIONS, getRandomNumber(1, 5)).join(`. `),
+    description: getShuffledArray(FILM_DESCRIPTIONS, getRandomNumber(1, 5))
+      .join(`. `),
     rating: getRandomNumber(1, 99) / 10,
-    genres: getArrayOfRandomElements(FILM_GENRES, getRandomNumber(1, 3)),
+    genres: getShuffledArray(FILM_GENRES, getRandomNumber(1, 3)),
     mpaaRating: getRandomArrayItem(MPAA_RATING),
+    releaseDate: getRandomDate(new Date(1900, 0), new Date(Date.now())),
+    director: getRandomFullName,
+    writers: generateArray(getRandomFullName, getRandomNumber(1, 3)),
+    actors: generateArray(getRandomFullName, getRandomNumber(3, 9)),
+    // runtime,
+    country: getRandomArrayItem(COUNTRIES),
   };
-};
-
-
-export const generateFilms = (count) => {
-  return Array(count)
-    .fill(``)
-    .map(generateFilm);
 };

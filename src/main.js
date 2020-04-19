@@ -7,7 +7,8 @@ import getFilmsListExtraMarkup from './components/films-list-extra';
 import getLoadMoreButtonMarkup from './components/load-more';
 import getFilmCardMarkup from './components/film-card';
 
-import {generateFilms} from './mocks/films';
+import {generateFilm} from './mocks/films';
+import {generateArray} from './utils/random';
 
 // import {render}
 
@@ -16,7 +17,7 @@ const CARDS_ON_START_COUNT = 5;
 const CARDS_ON_CLICK_COUNT = 5;
 
 
-const films = generateFilms(CARDS_COUNT);
+const films = generateArray(generateFilm, CARDS_COUNT);
 
 
 const render = (parent, markup, place = `beforeend`) => {

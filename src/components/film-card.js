@@ -4,7 +4,8 @@ const getFilmCardMarkup = (film) => {
     poster,
     description,
     rating,
-    genres
+    genres,
+    releaseDate,
   } = film;
 
   const formatedDescription = description.length > 140 ? `${description.slice(0, 138)}…` : description;
@@ -14,7 +15,7 @@ const getFilmCardMarkup = (film) => {
       <h3 class="film-card__title">${name}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">1929</span>
+        <span class="film-card__year">${releaseDate.getFullYear()}</span>
         <span class="film-card__duration">1h 55m</span>
         <span class="film-card__genre">${genres[0]}</span>
       </p>
