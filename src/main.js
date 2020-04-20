@@ -9,6 +9,8 @@ import getFilmCardMarkup from './components/film-card';
 import getFilmPopup from './components/film-popup';
 
 import {generateFilm} from './mocks/films';
+import {filters} from './mocks/filters';
+
 import {generateArray} from './utils/random';
 
 // import {render}
@@ -29,7 +31,7 @@ const header = document.querySelector(`.header`);
 render(header, getProfileMarkup());
 
 const main = document.querySelector(`.main`);
-render(main, getMainNavMarkup());
+render(main, getMainNavMarkup(filters));
 render(main, getSortMarkup());
 render(main, getFilmsMainMarkup());
 
@@ -77,6 +79,6 @@ render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[1]), `bef
 
 // For testing purposes (temporary)
 render(document.body, getFilmPopup(films[0]), `beforeend`);
-const popup = document.querySelector('.film-details');
-const popupCloseButton = document.querySelector('.film-details__close-btn');
+const popup = document.querySelector(`.film-details`);
+const popupCloseButton = document.querySelector(`.film-details__close-btn`);
 popupCloseButton.addEventListener(`click`, () => popup.remove());
