@@ -6,18 +6,29 @@ import getFilmsListMarkup from './components/films-list';
 import getFilmsListExtraMarkup from './components/films-list-extra';
 import getLoadMoreButtonMarkup from './components/load-more';
 import getFilmCardMarkup from './components/film-card';
+import getFilmPopup from './components/film-popup';
 
-const CARDS_COUNT = 5;
+import {generateFilm} from './mocks/films';
+import {filters} from './mocks/filters';
 
-const render = (parent, markup, place = `beforeend`) => {
-  parent.insertAdjacentHTML(place, markup);
-};
+import {generateArray} from './utils/random';
+
+import {render} from './utils/dom';
+
+
+const CARDS_COUNT = 18;
+const CARDS_ON_START_COUNT = 5;
+const CARDS_ON_CLICK_COUNT = 5;
+
+
+const films = generateArray(generateFilm, CARDS_COUNT);
+
 
 const header = document.querySelector(`.header`);
 render(header, getProfileMarkup());
 
 const main = document.querySelector(`.main`);
-render(main, getMainNavMarkup());
+render(main, getMainNavMarkup(filters));
 render(main, getSortMarkup());
 render(main, getFilmsMainMarkup());
 
@@ -29,14 +40,42 @@ render(filmsMain, getFilmsListExtraMarkup(`Most commented`));
 const filmsList = document.querySelector(`.films-list`);
 render(filmsList, getLoadMoreButtonMarkup());
 
-const filmsListContainer = document.querySelector(`.films-list__container`);
-for (let i = 0; i < CARDS_COUNT; i++) {
-  render(filmsListContainer, getFilmCardMarkup());
-}
 
-// Obviously temporary solution
+const filmsListContainer = document.querySelector(`.films-list__container`);
+let cardsShownCount = CARDS_ON_START_COUNT;
+
+films.slice(0, cardsShownCount)
+  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film)));
+
+const loadMoreButton = document.querySelector(`.films-list__show-more`);
+loadMoreButton.addEventListener(`click`, () => {
+  const prevCardsShownCount = cardsShownCount;
+  cardsShownCount += CARDS_ON_CLICK_COUNT;
+  films.slice(prevCardsShownCount, cardsShownCount)
+  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film)));
+
+  if (cardsShownCount >= films.length) {
+    loadMoreButton.remove();
+  }
+});
+
+
 const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
-for (let container of filmsExtraListsContainers) {
-  render(container, getFilmCardMarkup());
-  render(container, getFilmCardMarkup());
-}
+const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsContainers);
+
+const filmsByRating = films.slice()
+  .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
+render(topRatedContainer, getFilmCardMarkup(filmsByRating[0]));
+render(topRatedContainer, getFilmCardMarkup(filmsByRating[1]));
+
+const filmsByCommentsNumber = films.slice()
+  .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
+render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[0]));
+render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[1]));
+
+
+// For testing purposes (temporary)
+render(document.body, getFilmPopup(films[0]));
+const popup = document.querySelector(`.film-details`);
+const popupCloseButton = document.querySelector(`.film-details__close-btn`);
+popupCloseButton.addEventListener(`click`, () => popup.remove());
