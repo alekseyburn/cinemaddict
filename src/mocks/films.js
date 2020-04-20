@@ -73,19 +73,19 @@ export const generateFilm = () => {
   const filmNumber = getRandomNumber(0, FILMS.length - 1);
 
   return {
-    name: FILMS[filmNumber].name,
-    poster: FILMS[filmNumber].poster,
+    actors: generateArray(getRandomFullName, getRandomNumber(3, 9)),
+    comments: generateArray(generateComment, getRandomNumber(0, 5)),
+    country: getRandomArrayItem(COUNTRIES),
     description: getShuffledArray(FILM_DESCRIPTIONS, getRandomNumber(1, 5))
-      .join(`. `),
-    rating: getRandomNumber(1, 99) / 10,
+    .join(`. `),
+    director: getRandomFullName(),
     genres: getShuffledArray(FILM_GENRES, getRandomNumber(1, 3)),
     mpaaRating: getRandomArrayItem(MPAA_RATING),
+    name: FILMS[filmNumber].name,
+    poster: FILMS[filmNumber].poster,
+    rating: getRandomNumber(10, 99) / 10,
     releaseDate: getRandomDate(new Date(1900, 0), new Date(Date.now())),
-    director: getRandomFullName,
-    writers: generateArray(getRandomFullName, getRandomNumber(1, 3)),
-    actors: generateArray(getRandomFullName, getRandomNumber(3, 9)),
     runtime: getRandomNumber(45, 210),
-    country: getRandomArrayItem(COUNTRIES),
-    comments: generateArray(generateComment, getRandomNumber(0, 5)),
+    writers: generateArray(getRandomFullName, getRandomNumber(1, 3)),
   };
 };

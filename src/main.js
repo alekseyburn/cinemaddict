@@ -6,6 +6,7 @@ import getFilmsListMarkup from './components/films-list';
 import getFilmsListExtraMarkup from './components/films-list-extra';
 import getLoadMoreButtonMarkup from './components/load-more';
 import getFilmCardMarkup from './components/film-card';
+import getFilmPopup from './components/film-popup';
 
 import {generateFilm} from './mocks/films';
 import {generateArray} from './utils/random';
@@ -66,3 +67,6 @@ for (let container of filmsExtraListsContainers) {
   render(container, getFilmCardMarkup(films[0]));
   render(container, getFilmCardMarkup(films[1]));
 }
+
+// For testing purposes (temporary)
+render(document.body, getFilmPopup(films[0]), `beforeend`);
