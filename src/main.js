@@ -13,7 +13,7 @@ import {filters} from './mocks/filters';
 
 import {generateArray} from './utils/random';
 
-// import {render}
+import {render} from './utils/dom';
 
 const CARDS_COUNT = 18;
 const CARDS_ON_START_COUNT = 5;
@@ -23,9 +23,7 @@ const CARDS_ON_CLICK_COUNT = 5;
 const films = generateArray(generateFilm, CARDS_COUNT);
 
 
-const render = (parent, markup, place = `beforeend`) => {
-  parent.insertAdjacentHTML(place, markup);
-};
+
 
 const header = document.querySelector(`.header`);
 render(header, getProfileMarkup());
