@@ -61,12 +61,22 @@ loadMoreButton.addEventListener(`click`, () => {
 });
 
 
-// Obviously temporary solution
 const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
-for (let container of filmsExtraListsContainers) {
-  render(container, getFilmCardMarkup(films[0]));
-  render(container, getFilmCardMarkup(films[1]));
-}
+const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsContainers);
+
+const filmsByRating = films.slice()
+  .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
+render(topRatedContainer, getFilmCardMarkup(filmsByRating[0]), `beforeend`);
+render(topRatedContainer, getFilmCardMarkup(filmsByRating[1]), `beforeend`);
+
+const filmsByCommentsNumber = films.slice()
+  .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
+render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[0]), `beforeend`);
+render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[1]), `beforeend`);
+
 
 // For testing purposes (temporary)
 render(document.body, getFilmPopup(films[0]), `beforeend`);
+const popup = document.querySelector('.film-details');
+const popupCloseButton = document.querySelector('.film-details__close-btn');
+popupCloseButton.addEventListener(`click`, () => popup.remove());
