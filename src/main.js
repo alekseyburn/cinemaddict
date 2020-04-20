@@ -23,8 +23,6 @@ const CARDS_ON_CLICK_COUNT = 5;
 const films = generateArray(generateFilm, CARDS_COUNT);
 
 
-
-
 const header = document.querySelector(`.header`);
 render(header, getProfileMarkup());
 
