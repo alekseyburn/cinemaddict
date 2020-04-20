@@ -15,6 +15,7 @@ import {generateArray} from './utils/random';
 
 import {render} from './utils/dom';
 
+
 const CARDS_COUNT = 18;
 const CARDS_ON_START_COUNT = 5;
 const CARDS_ON_CLICK_COUNT = 5;
@@ -44,14 +45,14 @@ const filmsListContainer = document.querySelector(`.films-list__container`);
 let cardsShownCount = CARDS_ON_START_COUNT;
 
 films.slice(0, cardsShownCount)
-  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film), `beforeend`));
+  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film)));
 
 const loadMoreButton = document.querySelector(`.films-list__show-more`);
 loadMoreButton.addEventListener(`click`, () => {
   const prevCardsShownCount = cardsShownCount;
   cardsShownCount += CARDS_ON_CLICK_COUNT;
   films.slice(prevCardsShownCount, cardsShownCount)
-  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film), `beforeend`));
+  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film)));
 
   if (cardsShownCount >= films.length) {
     loadMoreButton.remove();
@@ -64,17 +65,17 @@ const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsCo
 
 const filmsByRating = films.slice()
   .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
-render(topRatedContainer, getFilmCardMarkup(filmsByRating[0]), `beforeend`);
-render(topRatedContainer, getFilmCardMarkup(filmsByRating[1]), `beforeend`);
+render(topRatedContainer, getFilmCardMarkup(filmsByRating[0]));
+render(topRatedContainer, getFilmCardMarkup(filmsByRating[1]));
 
 const filmsByCommentsNumber = films.slice()
   .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[0]), `beforeend`);
-render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[1]), `beforeend`);
+render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[0]));
+render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[1]));
 
 
 // For testing purposes (temporary)
-render(document.body, getFilmPopup(films[0]), `beforeend`);
+render(document.body, getFilmPopup(films[0]));
 const popup = document.querySelector(`.film-details`);
 const popupCloseButton = document.querySelector(`.film-details__close-btn`);
 popupCloseButton.addEventListener(`click`, () => popup.remove());

@@ -31,5 +31,4 @@ export const formatDDMonthYYYY = (date) => {
 };
 
 export const formatCommentDate = (date) =>
-  `${date.getFullYear()}/${zeroPad(date.getMonth() + 1, 2)}/${zeroPad(date.getDate(), 2)}
-  ${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`;
+  `${date.getFullYear()}/${zeroPad(date.getMonth() + 1, 2)}/${zeroPad(date.getDate(), 2)} ${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`;
