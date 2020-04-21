@@ -10,11 +10,5 @@ Thumbs.db
 # Вспомогательные файлы
 *.log*
 node_modules/
-jsconfig.json
 
 # Файлы сборки (допишите самостоятельно)
-public/bundle.js
-public/bundle.js.map
-
-# Мои служебыне файлы
-questions.txt
