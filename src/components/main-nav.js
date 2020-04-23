@@ -1,10 +1,7 @@
+import {createElement} from '../utils/dom';
+
 const getMainNavMarkup = (filters) => {
-  const filtersMarkup = filters.map((filter, index) => {
-    const {
-      name,
-      title,
-      count,
-    } = filter;
+  const filtersMarkup = filters.map(({name, title, count}, index) => {
 
     const countMarkup = `<span class="main-navigation__item-count">${count}</span>`;
     const activeClass = index === 0 ? `main-navigation__item--active` : ``;
@@ -20,7 +17,6 @@ const getMainNavMarkup = (filters) => {
     );
   }).join(``);
 
-
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">
@@ -31,4 +27,24 @@ const getMainNavMarkup = (filters) => {
   );
 };
 
-export default getMainNavMarkup;
+export default class MainNav {
+  constructor(filters) {
+    this._element = null;
+    this._filters = filters;
+  }
+
+  getTemplate() {
+    return getMainNavMarkup(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

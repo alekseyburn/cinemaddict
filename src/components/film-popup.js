@@ -3,6 +3,7 @@ import {
   formatDDMonthYYYY,
   formatRuntime,
 } from '../utils/time';
+import {createElement} from '../utils/dom';
 
 
 const getGenresMarkup = (genres) => genres
@@ -10,51 +11,43 @@ const getGenresMarkup = (genres) => genres
   .join(``);
 
 
-const getCommentsMarkup = (comments) => {
-  return comments.map((comment) => {
-    const {
-      author,
-      date,
-      emoji,
-      message,
-    } = comment;
-
-    return (
-      `<li class="film-details__comment">
-        <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
-        </span>
-        <div>
-          <p class="film-details__comment-text">${message}</p>
-          <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${author}</span>
-            <span class="film-details__comment-day">${formatCommentDate(date)}</span>
-            <button class="film-details__comment-delete">Delete</button>
-          </p>
-        </div>
-      </li>`
-    );
-  }).join(``);
-};
+const getCommentsMarkup = (comments) => comments.map(({
+  author,
+  date,
+  emoji,
+  message,
+}) => (
+  `<li class="film-details__comment">
+    <span class="film-details__comment-emoji">
+      <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
+    </span>
+    <div>
+      <p class="film-details__comment-text">${message}</p>
+      <p class="film-details__comment-info">
+        <span class="film-details__comment-author">${author}</span>
+        <span class="film-details__comment-day">${formatCommentDate(date)}</span>
+        <button class="film-details__comment-delete">Delete</button>
+      </p>
+    </div>
+  </li>`
+)).join(``);
 
 
-const getFilmPopupMarkup = (film) => {
-  const {
-    actors,
-    comments,
-    country,
-    description,
-    director,
-    genres,
-    mpaaRating,
-    name,
-    poster,
-    rating,
-    releaseDate,
-    runtime,
-    writers,
-  } = film;
-
+const getFilmPopupMarkup = ({
+  actors,
+  comments,
+  country,
+  description,
+  director,
+  genres,
+  mpaaRating,
+  name,
+  poster,
+  rating,
+  releaseDate,
+  runtime,
+  writers,
+}) => {
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -175,4 +168,24 @@ const getFilmPopupMarkup = (film) => {
   );
 };
 
-export default getFilmPopupMarkup;
+export default class FilmPopup {
+  constructor(film) {
+    this._element = null;
+    this._film = film;
+  }
+
+  getTemplate() {
+    return getFilmPopupMarkup(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

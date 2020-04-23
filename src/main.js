@@ -1,12 +1,12 @@
-import getProfileMarkup from './components/profile';
-import getMainNavMarkup from './components/main-nav';
-import getSortMarkup from './components/sort';
-import getFilmsMainMarkup from './components/films-main';
-import getFilmsListMarkup from './components/films-list';
-import getFilmsListExtraMarkup from './components/films-list-extra';
-import getLoadMoreButtonMarkup from './components/load-more';
-import getFilmCardMarkup from './components/film-card';
-import getFilmPopup from './components/film-popup';
+import ProfileComponent from './components/profile';
+import MainNavComponent from './components/main-nav';
+import SortComponent from './components/sort';
+import FilmsContainerComponent from './components/films-main';
+import FilmsListComponent from './components/films-list';
+import FilmsListExtraComponent from './components/films-list-extra';
+import LoadMoreButtonComponent from './components/load-more';
+import FilmCardComponent from './components/film-card';
+import FilmPopupComponent from './components/film-popup';
 
 import {generateFilm} from './mocks/films';
 import {filters} from './mocks/filters';
@@ -25,34 +25,34 @@ const films = generateArray(generateFilm, CARDS_COUNT);
 
 
 const header = document.querySelector(`.header`);
-render(header, getProfileMarkup());
+render(header, new ProfileComponent().getElement());
 
 const main = document.querySelector(`.main`);
-render(main, getMainNavMarkup(filters));
-render(main, getSortMarkup());
-render(main, getFilmsMainMarkup());
+render(main, new MainNavComponent(filters).getElement());
+render(main, new SortComponent().getElement());
+const filmsMain = new FilmsContainerComponent().getElement();
+render(main, filmsMain);
 
-const filmsMain = document.querySelector(`.films`);
-render(filmsMain, getFilmsListMarkup());
-render(filmsMain, getFilmsListExtraMarkup(`Top rated`));
-render(filmsMain, getFilmsListExtraMarkup(`Most commented`));
+const filmsList = new FilmsListComponent().getElement();
+render(filmsMain, filmsList);
+render(filmsMain, new FilmsListExtraComponent(`Top rated`).getElement());
+render(filmsMain, new FilmsListExtraComponent(`Most commented`).getElement());
 
-const filmsList = document.querySelector(`.films-list`);
-render(filmsList, getLoadMoreButtonMarkup());
+const loadMoreButton = new LoadMoreButtonComponent().getElement();
+render(filmsList, loadMoreButton);
 
 
 const filmsListContainer = document.querySelector(`.films-list__container`);
 let cardsShownCount = CARDS_ON_START_COUNT;
 
 films.slice(0, cardsShownCount)
-  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film)));
+  .forEach((film) => render(filmsListContainer, new FilmCardComponent(film).getElement()));
 
-const loadMoreButton = document.querySelector(`.films-list__show-more`);
 loadMoreButton.addEventListener(`click`, () => {
   const prevCardsShownCount = cardsShownCount;
   cardsShownCount += CARDS_ON_CLICK_COUNT;
   films.slice(prevCardsShownCount, cardsShownCount)
-  .forEach((film) => render(filmsListContainer, getFilmCardMarkup(film)));
+    .forEach((film) => render(filmsListContainer, new FilmCardComponent(film).getElement()));
 
   if (cardsShownCount >= films.length) {
     loadMoreButton.remove();
@@ -65,17 +65,17 @@ const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsCo
 
 const filmsByRating = films.slice()
   .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
-render(topRatedContainer, getFilmCardMarkup(filmsByRating[0]));
-render(topRatedContainer, getFilmCardMarkup(filmsByRating[1]));
+render(topRatedContainer, new FilmCardComponent(filmsByRating[0]).getElement());
+render(topRatedContainer, new FilmCardComponent(filmsByRating[1]).getElement());
 
 const filmsByCommentsNumber = films.slice()
   .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[0]));
-render(mostCommentedContainer, getFilmCardMarkup(filmsByCommentsNumber[1]));
+render(mostCommentedContainer, new FilmCardComponent(filmsByCommentsNumber[0]).getElement());
+render(mostCommentedContainer, new FilmCardComponent(filmsByCommentsNumber[1]).getElement());
 
 
 // For testing purposes (temporary)
-render(document.body, getFilmPopup(films[0]));
+render(document.body, new FilmPopupComponent(films[0]).getElement());
 const popup = document.querySelector(`.film-details`);
 const popupCloseButton = document.querySelector(`.film-details__close-btn`);
 popupCloseButton.addEventListener(`click`, () => popup.remove());

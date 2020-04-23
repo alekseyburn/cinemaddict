@@ -1,3 +1,5 @@
+import {createElement} from '../utils/dom';
+
 const getFilmsListExtraMarkup = (title) => {
   return (
     `<section class="films-list--extra">
@@ -9,4 +11,24 @@ const getFilmsListExtraMarkup = (title) => {
   );
 };
 
-export default getFilmsListExtraMarkup;
+export default class FilmsListExtra {
+  constructor(title) {
+    this._element = null;
+    this._title = title;
+  }
+
+  getTemplate() {
+    return getFilmsListExtraMarkup(this._title);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
