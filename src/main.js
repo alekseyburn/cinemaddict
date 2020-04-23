@@ -21,6 +21,27 @@ const CARDS_ON_START_COUNT = 5;
 const CARDS_ON_CLICK_COUNT = 5;
 
 
+const renderFilmCard = (filmContainer, film) => {
+  const showPopupHandler = () => {
+    render(document.body, filmPopupElement);
+  };
+
+  const filmCardElement = new FilmCardComponent(film).getElement();
+  const posterImage = filmCardElement.querySelector(`.film-card__poster`);
+  const titleHeading = filmCardElement.querySelector(`.film-card__title`);
+  const commentsLink = filmCardElement.querySelector(`.film-card__comments`);
+
+  posterImage.addEventListener(`click`, showPopupHandler);
+  titleHeading.addEventListener(`click`, showPopupHandler);
+  commentsLink.addEventListener(`click`, showPopupHandler);
+
+  const filmPopupElement = new FilmPopupComponent(film).getElement();
+  const popupCloseButton = filmPopupElement.querySelector(`.film-details__close-btn`);
+  popupCloseButton.addEventListener(`click`, () => filmPopupElement.remove());
+
+  render(filmContainer, filmCardElement);
+};
+
 const films = generateArray(generateFilm, CARDS_COUNT);
 
 
@@ -46,13 +67,13 @@ const filmsListContainer = document.querySelector(`.films-list__container`);
 let cardsShownCount = CARDS_ON_START_COUNT;
 
 films.slice(0, cardsShownCount)
-  .forEach((film) => render(filmsListContainer, new FilmCardComponent(film).getElement()));
+  .forEach((film) => renderFilmCard(filmsListContainer, film));
 
 loadMoreButton.addEventListener(`click`, () => {
   const prevCardsShownCount = cardsShownCount;
   cardsShownCount += CARDS_ON_CLICK_COUNT;
   films.slice(prevCardsShownCount, cardsShownCount)
-    .forEach((film) => render(filmsListContainer, new FilmCardComponent(film).getElement()));
+    .forEach((film) => renderFilmCard(filmsListContainer, film));
 
   if (cardsShownCount >= films.length) {
     loadMoreButton.remove();
@@ -65,17 +86,10 @@ const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsCo
 
 const filmsByRating = films.slice()
   .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
-render(topRatedContainer, new FilmCardComponent(filmsByRating[0]).getElement());
-render(topRatedContainer, new FilmCardComponent(filmsByRating[1]).getElement());
+renderFilmCard(topRatedContainer, filmsByRating[0]);
+renderFilmCard(topRatedContainer, filmsByRating[1]);
 
 const filmsByCommentsNumber = films.slice()
   .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-render(mostCommentedContainer, new FilmCardComponent(filmsByCommentsNumber[0]).getElement());
-render(mostCommentedContainer, new FilmCardComponent(filmsByCommentsNumber[1]).getElement());
-
-
-// For testing purposes (temporary)
-render(document.body, new FilmPopupComponent(films[0]).getElement());
-const popup = document.querySelector(`.film-details`);
-const popupCloseButton = document.querySelector(`.film-details__close-btn`);
-popupCloseButton.addEventListener(`click`, () => popup.remove());
+renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[0]);
+renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[1]);
