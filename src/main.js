@@ -1,12 +1,13 @@
-import ProfileComponent from './components/profile';
-import MainNavComponent from './components/main-nav';
-import SortComponent from './components/sort';
+import FilmCardComponent from './components/film-card';
+import FilmPopupComponent from './components/film-popup';
 import FilmsContainerComponent from './components/films-main';
 import FilmsListComponent from './components/films-list';
 import FilmsListExtraComponent from './components/films-list-extra';
 import LoadMoreButtonComponent from './components/load-more';
-import FilmCardComponent from './components/film-card';
-import FilmPopupComponent from './components/film-popup';
+import MainNavComponent from './components/main-nav';
+import NoFilmsComponent from './components/no-films';
+import ProfileComponent from './components/profile';
+import SortComponent from './components/sort';
 
 import {generateFilm} from './mocks/films';
 import {filters} from './mocks/filters';
@@ -16,7 +17,7 @@ import {generateArray} from './utils/random';
 import {render} from './utils/dom';
 
 
-const CARDS_COUNT = 18;
+const CARDS_COUNT = 0;
 const CARDS_ON_START_COUNT = 5;
 const CARDS_ON_CLICK_COUNT = 5;
 
@@ -53,6 +54,12 @@ const renderFilmCard = (filmContainer, film) => {
 const renderFilmsContainer = (filmsComponent, films) => {
   const filmsList = new FilmsListComponent().getElement();
   render(filmsMain, filmsList);
+
+  if (films.length === 0) {
+    render(filmsList, new NoFilmsComponent().getElement());
+    return;
+  }
+
   render(filmsMain, new FilmsListExtraComponent(`Top rated`).getElement());
   render(filmsMain, new FilmsListExtraComponent(`Most commented`).getElement());
 
