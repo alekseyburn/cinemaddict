@@ -24,6 +24,14 @@ const CARDS_ON_CLICK_COUNT = 5;
 const renderFilmCard = (filmContainer, film) => {
   const showPopupHandler = () => {
     render(document.body, filmPopupElement);
+    document.addEventListener(`keydown`, escKeyHandler);
+  };
+
+  const escKeyHandler = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Ecs`) {
+      filmPopupElement.remove();
+      document.removeEventListener(`keydown`, escKeyHandler);
+    }
   };
 
   const filmCardElement = new FilmCardComponent(film).getElement();
