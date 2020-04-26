@@ -50,54 +50,56 @@ const renderFilmCard = (filmContainer, film) => {
   render(filmContainer, filmCardElement);
 };
 
-const films = generateArray(generateFilm, CARDS_COUNT);
+const renderFilmsContainer = (filmsComponent, films) => {
+  const filmsList = new FilmsListComponent().getElement();
+  render(filmsMain, filmsList);
+  render(filmsMain, new FilmsListExtraComponent(`Top rated`).getElement());
+  render(filmsMain, new FilmsListExtraComponent(`Most commented`).getElement());
+
+  const loadMoreButton = new LoadMoreButtonComponent().getElement();
+  render(filmsList, loadMoreButton);
+
+
+  const filmsListContainer = document.querySelector(`.films-list__container`);
+  let cardsShownCount = CARDS_ON_START_COUNT;
+
+  films.slice(0, cardsShownCount)
+    .forEach((film) => renderFilmCard(filmsListContainer, film));
+
+  loadMoreButton.addEventListener(`click`, () => {
+    const prevCardsShownCount = cardsShownCount;
+    cardsShownCount += CARDS_ON_CLICK_COUNT;
+    films.slice(prevCardsShownCount, cardsShownCount)
+      .forEach((film) => renderFilmCard(filmsListContainer, film));
+
+    if (cardsShownCount >= films.length) {
+      loadMoreButton.remove();
+    }
+  });
+
+
+  const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
+  const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsContainers);
+
+  const filmsByRating = films.slice()
+    .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
+  renderFilmCard(topRatedContainer, filmsByRating[0]);
+  renderFilmCard(topRatedContainer, filmsByRating[1]);
+
+  const filmsByCommentsNumber = films.slice()
+    .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
+  renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[0]);
+  renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[1]);
+};
 
 
 const header = document.querySelector(`.header`);
 render(header, new ProfileComponent().getElement());
-
 const main = document.querySelector(`.main`);
 render(main, new MainNavComponent(filters).getElement());
 render(main, new SortComponent().getElement());
 const filmsMain = new FilmsContainerComponent().getElement();
 render(main, filmsMain);
 
-const filmsList = new FilmsListComponent().getElement();
-render(filmsMain, filmsList);
-render(filmsMain, new FilmsListExtraComponent(`Top rated`).getElement());
-render(filmsMain, new FilmsListExtraComponent(`Most commented`).getElement());
-
-const loadMoreButton = new LoadMoreButtonComponent().getElement();
-render(filmsList, loadMoreButton);
-
-
-const filmsListContainer = document.querySelector(`.films-list__container`);
-let cardsShownCount = CARDS_ON_START_COUNT;
-
-films.slice(0, cardsShownCount)
-  .forEach((film) => renderFilmCard(filmsListContainer, film));
-
-loadMoreButton.addEventListener(`click`, () => {
-  const prevCardsShownCount = cardsShownCount;
-  cardsShownCount += CARDS_ON_CLICK_COUNT;
-  films.slice(prevCardsShownCount, cardsShownCount)
-    .forEach((film) => renderFilmCard(filmsListContainer, film));
-
-  if (cardsShownCount >= films.length) {
-    loadMoreButton.remove();
-  }
-});
-
-
-const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
-const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsContainers);
-
-const filmsByRating = films.slice()
-  .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
-renderFilmCard(topRatedContainer, filmsByRating[0]);
-renderFilmCard(topRatedContainer, filmsByRating[1]);
-
-const filmsByCommentsNumber = films.slice()
-  .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[0]);
-renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[1]);
+const films = generateArray(generateFilm, CARDS_COUNT);
+renderFilmsContainer(filmsMain, films);
