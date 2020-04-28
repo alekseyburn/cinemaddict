@@ -17,7 +17,7 @@ import {generateArray} from './utils/random';
 import {render} from './utils/dom';
 
 
-const CARDS_COUNT = 0;
+const CARDS_COUNT = 18;
 const CARDS_ON_START_COUNT = 5;
 const CARDS_ON_CLICK_COUNT = 5;
 

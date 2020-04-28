@@ -1,4 +1,4 @@
-import {createElement} from '../utils/dom';
+import AbstractComponent from './absstract-component';
 import {formatRuntime} from '../utils/time';
 
 const getFilmCardMarkup = ({
@@ -38,24 +38,13 @@ const getFilmCardMarkup = ({
   );
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
   }
 
   getTemplate() {
     return getFilmCardMarkup(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

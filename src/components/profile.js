@@ -1,4 +1,5 @@
-import {createElement} from '../utils/dom';
+import AbstractComponent from "./absstract-component";
+
 
 const getProfileMarkup = () => {
   return (
@@ -9,24 +10,8 @@ const getProfileMarkup = () => {
   );
 };
 
-export default class Profile {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Profile extends AbstractComponent {
   getTemplate() {
     return getProfileMarkup();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

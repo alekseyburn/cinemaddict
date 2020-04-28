@@ -1,4 +1,4 @@
-import {createElement} from '../utils/dom';
+import AbstractComponent from './absstract-component';
 
 const getMainNavMarkup = (filters) => {
   const filtersMarkup = filters.map(({name, title, count}, index) => {
@@ -27,24 +27,13 @@ const getMainNavMarkup = (filters) => {
   );
 };
 
-export default class MainNav {
+export default class MainNav extends AbstractComponent {
   constructor(filters) {
-    this._element = null;
+    super();
     this._filters = filters;
   }
 
   getTemplate() {
     return getMainNavMarkup(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
