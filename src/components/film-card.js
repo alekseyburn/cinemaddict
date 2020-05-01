@@ -47,4 +47,14 @@ export default class FilmCard extends AbstractComponent {
   getTemplate() {
     return getFilmCardMarkup(this._film);
   }
+
+  setClickHandler(handler) {
+    const posterImage = this.getElement().querySelector(`.film-card__poster`);
+    const titleHeading = this.getElement().querySelector(`.film-card__title`);
+    const commentsLink = this.getElement().querySelector(`.film-card__comments`);
+
+    posterImage.addEventListener(`click`, handler);
+    titleHeading.addEventListener(`click`, handler);
+    commentsLink.addEventListener(`click`, handler);
+  }
 }

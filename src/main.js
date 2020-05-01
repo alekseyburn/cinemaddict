@@ -23,11 +23,6 @@ const CARDS_ON_CLICK_COUNT = 5;
 
 
 const renderFilmCard = (filmContainer, film) => {
-  const showPopupHandler = () => {
-    render(document.body, filmPopupComponent);
-    document.addEventListener(`keydown`, escKeyHandler);
-  };
-
   const escKeyHandler = (evt) => {
     if (evt.key === `Escape` || evt.key === `Ecs`) {
       filmPopupComponent.removeElement();
@@ -36,21 +31,16 @@ const renderFilmCard = (filmContainer, film) => {
   };
 
   const filmCardComponent = new FilmCardComponent(film);
-  const posterImage = filmCardComponent.getElement()
-    .querySelector(`.film-card__poster`);
-  const titleHeading = filmCardComponent.getElement()
-    .querySelector(`.film-card__title`);
-  const commentsLink = filmCardComponent.getElement()
-    .querySelector(`.film-card__comments`);
-
-  posterImage.addEventListener(`click`, showPopupHandler);
-  titleHeading.addEventListener(`click`, showPopupHandler);
-  commentsLink.addEventListener(`click`, showPopupHandler);
-
   const filmPopupComponent = new FilmPopupComponent(film);
-  const popupCloseButton = filmPopupComponent.getElement()
-    .querySelector(`.film-details__close-btn`);
-  popupCloseButton.addEventListener(`click`, () => filmPopupComponent.removeElement());
+
+  filmCardComponent.setClickHandler(() => {
+    render(document.body, filmPopupComponent);
+    filmPopupComponent.setCloseButtonClickHandler(() => {
+      filmPopupComponent.removeElement();
+      document.removeEventListener(`keydown`, escKeyHandler);
+    });
+    document.addEventListener(`keydown`, escKeyHandler);
+  });
 
   render(filmContainer, filmCardComponent);
 };
@@ -77,7 +67,7 @@ const renderFilmsContainer = (filmsContainer, films) => {
   films.slice(0, cardsShownCount)
     .forEach((film) => renderFilmCard(filmsListContainer, film));
 
-  loadMoreButtonComponent.getElement().addEventListener(`click`, () => {
+  loadMoreButtonComponent.setClickHandler(() => {
     const prevCardsShownCount = cardsShownCount;
     cardsShownCount += CARDS_ON_CLICK_COUNT;
     films.slice(prevCardsShownCount, cardsShownCount)
