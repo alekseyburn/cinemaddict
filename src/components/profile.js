@@ -1,4 +1,4 @@
-import AbstractComponent from "./absstract-component";
+import AbstractComponent from "./abstract-component";
 
 
 const getProfileMarkup = () => {

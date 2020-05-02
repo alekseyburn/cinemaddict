@@ -17,15 +17,15 @@ const CARDS_ON_START_COUNT = 5;
 const CARDS_ON_CLICK_COUNT = 5;
 
 const renderFilmCard = (filmContainer, film) => {
+  const filmCardComponent = new FilmCardComponent(film);
+  const filmPopupComponent = new FilmPopupComponent(film);
+
   const escKeyHandler = (evt) => {
     if (evt.key === `Escape` || evt.key === `Ecs`) {
       filmPopupComponent.removeElement();
       document.removeEventListener(`keydown`, escKeyHandler);
     }
   };
-
-  const filmCardComponent = new FilmCardComponent(film);
-  const filmPopupComponent = new FilmPopupComponent(film);
 
   filmCardComponent.setClickHandler(() => {
     render(document.body, filmPopupComponent);

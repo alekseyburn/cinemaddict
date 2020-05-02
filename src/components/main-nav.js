@@ -1,4 +1,4 @@
-import AbstractComponent from './absstract-component';
+import AbstractComponent from './abstract-component';
 
 const getMainNavMarkup = (filters) => {
   const filtersMarkup = filters.map(({name, title, count}, index) => {
