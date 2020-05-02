@@ -88,10 +88,10 @@ export default class PageController {
 
 
     const filmsExtraListsContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
-    const [topRatedContainer, mostCommentedContainer] = Array.from(filmsExtraListsContainers);
+    const [topRatedContainer, mostCommentedContainer] = filmsExtraListsContainers;
 
     const filmsByRating = films.slice()
-      .sort((filmA, filmB) => filmB.rating.valueOf() - filmA.rating.valueOf());
+      .sort((filmA, filmB) => filmB.rating - filmA.rating);
     renderFilmCard(topRatedContainer, filmsByRating[0]);
     renderFilmCard(topRatedContainer, filmsByRating[1]);
 
