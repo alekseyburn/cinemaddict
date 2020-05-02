@@ -1,9 +1,9 @@
+import AbstractComponent from './abstract-component';
 import {
   formatCommentDate,
   formatDDMonthYYYY,
   formatRuntime,
 } from '../utils/time';
-import {createElement} from '../utils/dom';
 
 
 const getGenresMarkup = (genres) => genres
@@ -168,9 +168,9 @@ const getFilmPopupMarkup = ({
   );
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractComponent {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
   }
 
@@ -178,14 +178,8 @@ export default class FilmPopup {
     return getFilmPopupMarkup(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setCloseButtonClickHandler(handler) {
+    const popupCloseButton = this.getElement().querySelector(`.film-details__close-btn`);
+    popupCloseButton.addEventListener(`click`, handler);
   }
 }

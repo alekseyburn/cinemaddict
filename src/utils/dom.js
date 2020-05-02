@@ -1,5 +1,5 @@
-export const render = (parent, element, plasce = `beforeend`) =>
-  parent.insertAdjacentElement(plasce, element);
+export const render = (parent, component, place = `beforeend`) =>
+  parent.insertAdjacentElement(place, component.getElement());
 
 export const createElement = (markup) => {
   const container = document.createElement(`div`);
