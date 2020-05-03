@@ -1,17 +1,68 @@
 import AbstractComponent from './abstract-component';
 
-const getSortMarkup = () => {
+
+export const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`,
+};
+
+
+const getSortItemsMarkup = (currentSortType) => {
+  let sortItemsMarkup = ``;
+  for (const key of Object.keys(SortType)) {
+    const activeSortClass = SortType[key] === currentSortType ? `sort__button--active` : ``;
+    sortItemsMarkup += `<li>
+      <a
+        href="#"
+        data-sort-type="${SortType[key]}"
+        class="sort__button ${activeSortClass}"
+      >Sort by ${SortType[key]}</a>
+    </li>`;
+  }
+
+  return sortItemsMarkup;
+};
+
+
+const getSortMarkup = (currentSortType) => {
   return (
     `<ul class="sort">
-      <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-      <li><a href="#" class="sort__button">Sort by date</a></li>
-      <li><a href="#" class="sort__button">Sort by rating</a></li>
+      ${getSortItemsMarkup(currentSortType)}
     </ul>`
   );
 };
 
 export default class Sort extends AbstractComponent {
+  constructor() {
+    super();
+
+    this._currentSortType = SortType.DEFAULT;
+  }
+
   getTemplate() {
-    return getSortMarkup();
+    return getSortMarkup(this._currentSortType);
+  }
+
+  getSortType() {
+    return this._currentSortType;
+  }
+
+  redrawElement() {
+    this.getElement().innerHTML = getSortItemsMarkup(this.getSortType());
+  }
+
+  setSortTypeChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      if (evt.target.tagName === `A`) {
+        const sortType = evt.target.dataset.sortType;
+
+        if (this._currentSortType !== sortType) {
+          this._currentSortType = sortType;
+          this.redrawElement();
+          handler(this._currentSortType);
+        }
+      }
+    });
   }
 }
