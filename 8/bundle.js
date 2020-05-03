@@ -121,7 +121,6 @@ class AbstractComponent {
   }
 
   removeElement() {
-    this._element.remove();
     this._element = null;
   }
 }
@@ -775,7 +774,7 @@ const renderFilmCard = (filmContainer, film) => {
 
   const escKeyHandler = (evt) => {
     if (evt.key === `Escape` || evt.key === `Ecs`) {
-      filmPopupComponent.removeElement();
+      Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["remove"])(filmPopupComponent);
       document.removeEventListener(`keydown`, escKeyHandler);
     }
   };
@@ -783,7 +782,7 @@ const renderFilmCard = (filmContainer, film) => {
   filmCardComponent.setClickHandler(() => {
     Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["render"])(document.body, filmPopupComponent);
     filmPopupComponent.setCloseButtonClickHandler(() => {
-      filmPopupComponent.removeElement();
+      Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["remove"])(filmPopupComponent);
       document.removeEventListener(`keydown`, escKeyHandler);
     });
     document.addEventListener(`keydown`, escKeyHandler);
@@ -819,6 +818,7 @@ class PageController {
     this._sortComponent = new _components_sort__WEBPACK_IMPORTED_MODULE_8__["default"]();
     this._filmsContainerComponent = new _components_films_main__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this._filmsListComponent = new _components_films_list__WEBPACK_IMPORTED_MODULE_3__["default"]();
+    this._loadMoreButtonComponent = null;
   }
 
   render(films) {
@@ -827,7 +827,10 @@ class PageController {
         return;
       }
 
-      loadMoreButtonComponent.setClickHandler(() => {
+      this._loadMoreButtonComponent = new _components_load_more__WEBPACK_IMPORTED_MODULE_5__["default"]();
+      Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["render"])(this._filmsListComponent.getElement(), this._loadMoreButtonComponent);
+
+      this._loadMoreButtonComponent.setClickHandler(() => {
         const prevCardsShownCount = cardsShownCount;
         cardsShownCount += CARDS_ON_CLICK_COUNT;
 
@@ -835,7 +838,7 @@ class PageController {
         sortedFilms.forEach((film) => renderFilmCard(filmsListContainer, film));
 
         if (cardsShownCount >= films.length) {
-          loadMoreButtonComponent.removeElement();
+          Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["remove"])(this._loadMoreButtonComponent);
         }
       });
     };
@@ -853,10 +856,6 @@ class PageController {
 
     Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["render"])(this._filmsContainerComponent.getElement(), new _components_films_list_extra__WEBPACK_IMPORTED_MODULE_4__["default"](`Top rated`));
     Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["render"])(this._filmsContainerComponent.getElement(), new _components_films_list_extra__WEBPACK_IMPORTED_MODULE_4__["default"](`Most commented`));
-
-    const loadMoreButtonComponent = new _components_load_more__WEBPACK_IMPORTED_MODULE_5__["default"]();
-    Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["render"])(this._filmsListComponent.getElement(), loadMoreButtonComponent);
-
 
     const filmsListContainer = document.querySelector(`.films-list__container`);
     let cardsShownCount = CARDS_ON_START_COUNT;
@@ -880,10 +879,13 @@ class PageController {
     renderFilmCard(mostCommentedContainer, filmsByCommentsNumber[1]);
 
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      cardsShownCount = CARDS_ON_CLICK_COUNT;
+      cardsShownCount = CARDS_ON_START_COUNT;
 
       const sortedFilms = getSortedFilms(films, sortType, 0, cardsShownCount);
       filmsListContainer.innerHTML = ``;
+      if (this._loadMoreButtonComponent) {
+        Object(_utils_dom__WEBPACK_IMPORTED_MODULE_10__["remove"])(this._loadMoreButtonComponent);
+      }
       sortedFilms.forEach((film) => renderFilmCard(filmsListContainer, film));
 
       renderLoadMoreButton();
@@ -1289,13 +1291,14 @@ const zeroPad = (value, digits) =>
 /*!**************************!*\
   !*** ./src/utils/dom.js ***!
   \**************************/
-/*! exports provided: render, createElement */
+/*! exports provided: render, createElement, remove */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createElement", function() { return createElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remove", function() { return remove; });
 const render = (parent, component, place = `beforeend`) =>
   parent.insertAdjacentElement(place, component.getElement());
 
@@ -1303,6 +1306,11 @@ const createElement = (markup) => {
   const container = document.createElement(`div`);
   container.innerHTML = markup;
   return container.firstChild;
+};
+
+const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
 };
 
 
