@@ -4,12 +4,6 @@ import {
   getRandomFullName,
 } from '../utils/random';
 
-const EMOJI = [
-  `smile`,
-  `sleeping`,
-  `puke`,
-  `angry`,
-];
 
 const MESSAGES = [
   `I think this is the best I’ve seen till now`,
@@ -23,6 +17,15 @@ const MESSAGES = [
   `Come on!`,
   `E,k.ljr vfnm ndj.! F ye blb c.lf? ujdyj cj,fxmt/ Htibk rj vyt ktpnm ns? pfchfytw djy.xbq vfnm ndj.!`,
 ];
+
+
+export const EMOJI = [
+  `smile`,
+  `sleeping`,
+  `puke`,
+  `angry`,
+];
+
 
 export const generateComment = () => {
   return {

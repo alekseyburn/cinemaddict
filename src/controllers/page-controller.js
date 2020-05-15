@@ -89,19 +89,21 @@ export default class PageController {
 
     const filmsByRating = films.slice()
       .sort((filmA, filmB) => filmB.rating - filmA.rating);
-    this._renderFilms(
+    const filmsByRatingControllers = this._renderFilms(
         topRatedContainer,
         filmsByRating.slice(0, 2),
         this._onDataChange
     );
+    this._shownFilmsControllers = this._shownFilmsControllers.concat(filmsByRatingControllers);
 
     const filmsByCommentsNumber = films.slice()
       .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-    this._renderFilms(
+    const filmsByCommentsNumberController = this._renderFilms(
         mostCommentedContainer,
         filmsByCommentsNumber.slice(0, 2),
         this._onDataChange
     );
+    this._shownFilmsControllers = this._shownFilmsControllers.concat(filmsByCommentsNumberController);
   }
 
   _renderFilms(filmsContainerElement, films, onDataChange) {
@@ -169,5 +171,10 @@ export default class PageController {
 
     this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
     filmController.render(this._films[index]);
+  }
+
+  _onViewChange() {
+    this._shownFilmsControllers
+      .forEach((it) => it.setDefaultView());
   }
 }
