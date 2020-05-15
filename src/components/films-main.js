@@ -6,7 +6,7 @@ const getFilmsContainerMarkup = () => {
   );
 };
 
-export default class FilmsContainer extends AbstractComponent {
+export default class FilmsMain extends AbstractComponent {
   getTemplate() {
     return getFilmsContainerMarkup();
   }
