@@ -15,6 +15,8 @@ export default class FilmController {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+    // console.log(this._onDataChange, onDataChange);
+    // console.log(this._onViewChange, onViewChange);
     this._mode = Mode.DEFAULT;
 
     this._filmCardComponent = null;
@@ -83,15 +85,16 @@ export default class FilmController {
   }
 
   _showFilmPopup() {
-    this._onViewChange();
+    // this._onViewChange();
     render(document.body, this._filmPopupComponent);
-    document.addEventListener(`keydown`, this._escKeyHandler);
+    this._filmPopupComponent.rerender();
+    // document.addEventListener(`keydown`, this._escKeyHandler);
     this._mode = Mode.POPUP;
   }
 
   _hideFilmPopup() {
     remove(this._filmPopupComponent);
-    document.removeEventListener(`keydown`, this._escKeyHandler);
+    // document.removeEventListener(`keydown`, this._escKeyHandler);
     this._mode = Mode.DEFAULT;
   }
 
