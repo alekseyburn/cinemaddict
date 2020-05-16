@@ -85,16 +85,16 @@ export default class FilmController {
   }
 
   _showFilmPopup() {
-    // this._onViewChange();
+    this._onViewChange();
     render(document.body, this._filmPopupComponent);
     this._filmPopupComponent.rerender();
-    // document.addEventListener(`keydown`, this._escKeyHandler);
+    document.addEventListener(`keydown`, this._escKeyHandler);
     this._mode = Mode.POPUP;
   }
 
   _hideFilmPopup() {
     remove(this._filmPopupComponent);
-    // document.removeEventListener(`keydown`, this._escKeyHandler);
+    document.removeEventListener(`keydown`, this._escKeyHandler);
     this._mode = Mode.DEFAULT;
   }
 
