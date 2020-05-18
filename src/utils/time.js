@@ -1,34 +1,16 @@
-import {
-  capitalizeString,
-  zeroPad,
-} from './common';
+import moment from 'moment';
 
-const MONTHS = [
-  `january`,
-  `february`,
-  `march`,
-  `april`,
-  `may`,
-  `june`,
-  `july`,
-  `august`,
-  `september`,
-  `october`,
-  `november`,
-  `december`,
-];
-
+// Применять тут moment не очень хорошая идея
+// Сделано только изза требований задания
 export const formatRuntime = (runtimeMinutes) => {
-  const hours = Math.floor(runtimeMinutes / 60);
-  const minutes = runtimeMinutes - hours * 60;
-  return `${hours}h ${minutes}m`;
+  const duration = moment.duration(runtimeMinutes, `minutes`);
+  const hours = duration.hours() ? `${duration.hours()}h` : ``;
+  const minutes = `${duration.minutes()}m`;
+  return `${hours} ${minutes}`;
 };
 
-export const formatDDMonthYYYY = (date) => {
-  const zeroPadDate = zeroPad(date.getDate(), 2);
-  const month = capitalizeString(MONTHS[date.getMonth()]);
-  return `${zeroPadDate} ${month} ${date.getFullYear()}`;
-};
+export const formatDDMonthYYYY = (date) => moment(date)
+  .format(`DD MMMM YYYY`);
 
-export const formatCommentDate = (date) =>
-  `${date.getFullYear()}/${zeroPad(date.getMonth() + 1, 2)}/${zeroPad(date.getDate(), 2)} ${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`;
+export const formatCommentDate = (date) => moment(date)
+  .format(`YYYY/MM/DD hh:mm`);
