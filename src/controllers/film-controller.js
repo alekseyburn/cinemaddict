@@ -15,8 +15,6 @@ export default class FilmController {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    // console.log(this._onDataChange, onDataChange);
-    // console.log(this._onViewChange, onViewChange);
     this._mode = Mode.DEFAULT;
 
     this._filmCardComponent = null;

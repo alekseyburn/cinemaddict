@@ -73,6 +73,7 @@ export const generateFilm = () => {
   const filmNumber = getRandomNumber(0, FILMS.length - 1);
 
   return {
+    id: String(new Date() + Math.random()),
     actors: generateArray(getRandomFullName, getRandomNumber(3, 9)),
     comments: generateArray(generateComment, getRandomNumber(0, 5)),
     country: getRandomArrayItem(COUNTRIES),
