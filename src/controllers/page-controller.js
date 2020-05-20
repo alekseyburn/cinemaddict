@@ -82,23 +82,7 @@ export default class PageController {
 
     this._renderLoadMoreButton();
 
-
-    // const filmsExtraListsContainers = filmsMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
-    // const [topRatedContainer, mostCommentedContainer] = filmsExtraListsContainers;
-
-    // const filmsByRating = films.slice()
-    //   .sort((filmA, filmB) => filmB.rating - filmA.rating);
-    // this._renderFilms(
-    //     topRatedContainer,
-    //     filmsByRating.slice(0, 2)
-    // );
-
-    // const filmsByCommentsNumber = films.slice()
-    //   .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-    // this._renderFilms(
-    //     mostCommentedContainer,
-    //     filmsByCommentsNumber.slice(0, 2)
-    // );
+    this._renderExtraFilmLists();
   }
 
   _renderFilms(filmsContainerElement, films) {
@@ -145,6 +129,30 @@ export default class PageController {
     });
   }
 
+  _renderExtraFilmLists() {
+    const filmsExtraListsContainers = this._filmsMainComponent.getElement()
+      .querySelectorAll(`.films-list--extra .films-list__container`);
+    const [topRatedContainer, mostCommentedContainer] = filmsExtraListsContainers;
+    topRatedContainer.innerHTML = ``;
+    mostCommentedContainer.innerHTML = ``;
+
+    const filmsByRating = this._filmsModel.getFilms()
+      .slice()
+      .sort((filmA, filmB) => filmB.rating - filmA.rating);
+    this._renderFilms(
+        topRatedContainer,
+        filmsByRating.slice(0, 2)
+    );
+
+    const filmsByCommentsNumber = this._filmsModel.getFilms()
+      .slice()
+      .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
+    this._renderFilms(
+        mostCommentedContainer,
+        filmsByCommentsNumber.slice(0, 2)
+    );
+  }
+
   _onSortTypeChange(sortType) {
     this._cardsShownCount = CARDS_ON_START_COUNT;
 
@@ -165,7 +173,7 @@ export default class PageController {
 
     this._renderLoadMoreButton();
 
-    // render extra lists
+    this._renderExtraFilmLists();
   }
 
   _onDataChange(filmController, oldData, newData) {
