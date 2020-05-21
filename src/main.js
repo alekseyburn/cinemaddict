@@ -12,6 +12,7 @@ const CARDS_COUNT = 18;
 
 const headerElement = document.querySelector(`.header`);
 render(headerElement, new ProfileComponent());
+
 const mainElement = document.querySelector(`.main`);
 
 const films = generateArray(generateFilm, CARDS_COUNT);

@@ -1,4 +1,5 @@
 import FilmController from '../controllers/film-controller';
+import FilterController from '../controllers/filter-controller';
 import FilmsMainComponent from '../components/films-main';
 import FilmsListComponent from '../components/films-list';
 import FilmsListExtraComponent from '../components/films-list-extra';
@@ -6,8 +7,6 @@ import LoadMoreButtonComponent from '../components/load-more';
 import MainNavComponent from '../components/main-nav';
 import NoFilmsComponent from '../components/no-films';
 import SortComponent, {SortType} from '../components/sort';
-
-import {filters} from '../mocks/filters';
 
 import {render, remove} from '../utils/dom';
 
@@ -42,7 +41,7 @@ export default class PageController {
     this._cardsShownCount = 0;
 
     this._noFilmsComponent = new NoFilmsComponent();
-    this._mainNavComponent = new MainNavComponent(filters);
+    this._mainNavComponent = new MainNavComponent();
     this._sortComponent = new SortComponent();
     this._filmsMainComponent = new FilmsMainComponent();
     this._filmsListComponent = new FilmsListComponent();
@@ -59,6 +58,12 @@ export default class PageController {
     const films = this._filmsModel.getFilms();
 
     render(this._container, this._mainNavComponent);
+    const filtersController = new FilterController(
+        this._mainNavComponent.getElement(),
+        this._filmsModel
+    );
+    filtersController.render();
+
     render(this._container, this._sortComponent);
     render(this._container, this._filmsMainComponent);
     const filmsMainElement = this._filmsMainComponent.getElement();
