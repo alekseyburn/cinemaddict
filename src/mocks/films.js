@@ -88,8 +88,8 @@ export const generateFilm = () => {
     releaseDate: getRandomDate(new Date(1900, 0), new Date(Date.now())),
     runtime: getRandomNumber(45, 210),
     writers: generateArray(getRandomFullName, getRandomNumber(1, 3)),
-    isAddedToWatchlist: Math.random() > 0.33,
-    isMarkedAsWatched: Math.random() > 0.33,
-    isFavorite: Math.random() > 0.33,
+    isAddedToWatchlist: Math.random() > 0.5,
+    isMarkedAsWatched: Math.random() > 0.5,
+    isFavorite: Math.random() > 0.9,
   };
 };

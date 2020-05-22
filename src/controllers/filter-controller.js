@@ -13,7 +13,7 @@ export default class FilterController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
 
-    // this._filmsModel.set
+    this._filmsModel.setDataChangeHandler(this._onDataChange);
   }
 
   render() {
@@ -30,7 +30,7 @@ export default class FilterController {
 
     const oldComponent = this._filterComponent;
     this._filterComponent = new FilterComponent(filters);
-    this._filterComponent.setFilterChangeHandler(this._onFilterChange);
+    this._filterComponent.setFilterClickHandler(this._onFilterChange);
 
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
@@ -44,6 +44,8 @@ export default class FilterController {
   }
 
   _onFilterChange(filterType) {
+    this._filmsModel.setFilter(filterType);
     this._activeFilterType = filterType;
+    this.render();
   }
 }

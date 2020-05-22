@@ -34,13 +34,12 @@ export default class FilterComponent extends AbstractComponent {
     return getFiltersMarkup(this._filters);
   }
 
-  setFilterChangeHandler(handler) {
+  setFilterClickHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       if (evt.target.tagName !== `A`) {
         return;
       }
-
-      const filterName = evt.target.href.substring(1);
+      const filterName = evt.target.getAttribute(`href`).substring(1);
       handler(filterName);
     });
   }

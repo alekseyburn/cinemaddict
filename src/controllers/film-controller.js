@@ -82,6 +82,12 @@ export default class FilmController {
     }
   }
 
+  destroy() {
+    remove(this._filmCardComponent);
+    remove(this._filmPopupComponent);
+    document.removeEventListener(`keydown`, this._escKeyHandler);
+  }
+
   _showFilmPopup() {
     this._onViewChange();
     render(document.body, this._filmPopupComponent);
