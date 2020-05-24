@@ -52,6 +52,7 @@ export default class PageController {
     this._onViewChange = this._onViewChange.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
+    this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
     this._filmsModel.setFilterChangeHandler(this._onFilterChange);
   }
@@ -119,32 +120,20 @@ export default class PageController {
 
     render(this._filmsListComponent.getElement(), this._loadMoreButtonComponent);
 
-    this._loadMoreButtonComponent.setClickHandler(() => {
-      const prevCardsShownCount = this._cardsShownCount;
-      this._cardsShownCount += CARDS_ON_CLICK_COUNT;
-
-      const sortedFilms = getSortedFilms(
-          this._filmsModel.getFilms(),
-          this._sortComponent.getSortType(),
-          prevCardsShownCount,
-          this._cardsShownCount
-      );
-      this._renderFilms(
-          this._filmsListContainer,
-          sortedFilms
-      );
-
-      if (this._cardsShownCount >= this._filmsModel.getFilms().length) {
-        remove(this._loadMoreButtonComponent);
-      }
-    });
+    this._loadMoreButtonComponent.setClickHandler(this._onLoadMoreButtonClick);
   }
 
   _updateFilms(count) {
     this._removeFilms();
+    const sortedFilms = getSortedFilms(
+        this._filmsModel.getFilms(),
+        this._sortComponent.getSortType(),
+        0,
+        count
+    );
     this._renderFilms(
         this._filmsListContainer,
-        this._filmsModel.getFilms().slice(0, count)
+        sortedFilms
     );
     this._renderLoadMoreButton();
     this._renderExtraFilmLists();
@@ -154,8 +143,8 @@ export default class PageController {
     const filmsExtraListsContainers = this._filmsMainComponent.getElement()
       .querySelectorAll(`.films-list--extra .films-list__container`);
     const [topRatedContainer, mostCommentedContainer] = filmsExtraListsContainers;
-    topRatedContainer.innerHTML = ``;
-    mostCommentedContainer.innerHTML = ``;
+    // topRatedContainer.innerHTML = ``;
+    // mostCommentedContainer.innerHTML = ``;
 
     const filmsByRating = this._filmsModel.getAllFilms()
       .slice()
@@ -184,8 +173,7 @@ export default class PageController {
         this._cardsShownCount
     );
 
-    this._filmsListContainer.innerHTML = ``;
-    this._shownFilmsControllers = [];
+    this._removeFilms();
 
     this._renderFilms(
         this._filmsListContainer,
@@ -197,7 +185,28 @@ export default class PageController {
     this._renderExtraFilmLists();
   }
 
+  _onLoadMoreButtonClick() {
+    const prevCardsShownCount = this._cardsShownCount;
+    this._cardsShownCount += CARDS_ON_CLICK_COUNT;
+
+    const sortedFilms = getSortedFilms(
+        this._filmsModel.getFilms(),
+        this._sortComponent.getSortType(),
+        prevCardsShownCount,
+        this._cardsShownCount
+    );
+    this._renderFilms(
+        this._filmsListContainer,
+        sortedFilms
+    );
+
+    if (this._cardsShownCount >= this._filmsModel.getFilms().length) {
+      remove(this._loadMoreButtonComponent);
+    }
+  }
+
   _onFilterChange() {
+    this._cardsShownCount = CARDS_ON_START_COUNT;
     this._updateFilms(CARDS_ON_START_COUNT);
   }
 
