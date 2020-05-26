@@ -1,12 +1,12 @@
 import FilmController from '../controllers/film-controller';
 import FilterController from '../controllers/filter-controller';
-import FilmsMainComponent from '../components/films-main';
-import FilmsListComponent from '../components/films-list';
-import FilmsListExtraComponent from '../components/films-list-extra';
-import LoadMoreButtonComponent from '../components/load-more';
-import MainNavComponent from '../components/main-nav';
-import NoFilmsComponent from '../components/no-films';
-import SortComponent, {SortType} from '../components/sort';
+import FilmsMainComponent from '../components/films-main-component';
+import FilmsListComponent from '../components/films-list-component';
+import FilmsListExtraComponent from '../components/films-list-extra-component';
+import LoadMoreButtonComponent from '../components/load-more-component';
+import MainNavComponent from '../components/main-nav-component';
+import NoFilmsComponent from '../components/no-films-component';
+import SortComponent, {SortType} from '../components/sort-component';
 
 import {render, remove} from '../utils/dom';
 
@@ -143,8 +143,6 @@ export default class PageController {
     const filmsExtraListsContainers = this._filmsMainComponent.getElement()
       .querySelectorAll(`.films-list--extra .films-list__container`);
     const [topRatedContainer, mostCommentedContainer] = filmsExtraListsContainers;
-    // topRatedContainer.innerHTML = ``;
-    // mostCommentedContainer.innerHTML = ``;
 
     const filmsByRating = this._filmsModel.getAllFilms()
       .slice()
@@ -163,26 +161,9 @@ export default class PageController {
     );
   }
 
-  _onSortTypeChange(sortType) {
+  _onSortTypeChange() {
     this._cardsShownCount = CARDS_ON_START_COUNT;
-
-    const sortedFilms = getSortedFilms(
-        this._filmsModel.getFilms(),
-        sortType,
-        0,
-        this._cardsShownCount
-    );
-
-    this._removeFilms();
-
-    this._renderFilms(
-        this._filmsListContainer,
-        sortedFilms
-    );
-
-    this._renderLoadMoreButton();
-
-    this._renderExtraFilmLists();
+    this._updateFilms(CARDS_ON_START_COUNT);
   }
 
   _onLoadMoreButtonClick() {

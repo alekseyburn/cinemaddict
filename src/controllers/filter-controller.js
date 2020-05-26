@@ -1,4 +1,4 @@
-import FilterComponent from '../components/filter';
+import FilterComponent from '../components/filter-component';
 import {FilterType, FilterTitle, getFilmsByFilter} from '../utils/filter';
 import {render, replace} from '../utils/dom';
 

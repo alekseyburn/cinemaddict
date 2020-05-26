@@ -8,49 +8,58 @@ import {
 import {EMOJI} from '../mocks/comments';
 
 
-const getGenresMarkup = (genres) => genres
-  .map((genre) => `<span class="film-details__genre">${genre}</span>`)
-  .join(``);
+const getGenresMarkup = (genres) => {
+  return genres
+    .map((genre) => `<span class="film-details__genre">${genre}</span>`)
+    .join(``);
+};
 
+const getCommentsMarkup = (comments) => {
+  const commentsMarkup = comments.map((comment) => {
+    const {
+      author,
+      date,
+      emoji,
+      message,
+    } = comment;
 
-const getCommentsMarkup = (comments) => comments
-  .map(({
-    author,
-    date,
-    emoji,
-    message,
-  }) => (
-    `<li class="film-details__comment">
-      <span class="film-details__comment-emoji">
-        <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
-      </span>
-      <div>
-        <p class="film-details__comment-text">${message}</p>
-        <p class="film-details__comment-info">
-          <span class="film-details__comment-author">${author}</span>
-          <span class="film-details__comment-day">${formatCommentDate(date)}</span>
-          <button class="film-details__comment-delete">Delete</button>
-        </p>
-      </div>
-    </li>`
-  )).join(``);
+    return (
+      `<li class="film-details__comment">
+        <span class="film-details__comment-emoji">
+          <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
+        </span>
+        <div>
+          <p class="film-details__comment-text">${message}</p>
+          <p class="film-details__comment-info">
+            <span class="film-details__comment-author">${author}</span>
+            <span class="film-details__comment-day">${formatCommentDate(date)}</span>
+            <button class="film-details__comment-delete">Delete</button>
+          </p>
+        </div>
+      </li>`
+    );
+  }).join(``);
 
+  return commentsMarkup;
+};
 
-const getEmojiOptionsMarkup = (currentCommentEmoji) => EMOJI
-  .map((emojiName) => (
-    `<input
-      class="film-details__emoji-item visually-hidden" 
-      name="comment-emoji"
-      type="radio"
-      id="emoji-${emojiName}"
-      value="${emojiName}"
-      ${emojiName === currentCommentEmoji ? `checked` : ``}
-    >
-    <label class="film-details__emoji-label" for="emoji-${emojiName}">
-      <img src="./images/emoji/${emojiName}.png" width="30" height="30" alt="emoji">
-    </label>`
-  )).join(``);
-
+const getEmojiOptionsMarkup = (currentCommentEmoji) => {
+  return EMOJI.map((emojiName) => {
+    return (
+      `<input
+        class="film-details__emoji-item visually-hidden" 
+        name="comment-emoji"
+        type="radio"
+        id="emoji-${emojiName}"
+        value="${emojiName}"
+        ${emojiName === currentCommentEmoji ? `checked` : ``}
+      >
+      <label class="film-details__emoji-label" for="emoji-${emojiName}">
+        <img src="./images/emoji/${emojiName}.png" width="30" height="30" alt="emoji">
+      </label>`
+    );
+  }).join(``);
+};
 
 const getFilmPopupMarkup = (film, options) => {
   const {
@@ -73,7 +82,9 @@ const getFilmPopupMarkup = (film, options) => {
   } = film;
 
   const {currentCommentEmoji} = options;
-  const currentEmojiMarkup = currentCommentEmoji ? `<img src="images/emoji/${currentCommentEmoji}.png" width="55" height="55" alt="emoji-${currentCommentEmoji}">` : ``;
+  const currentEmojiMarkup = currentCommentEmoji
+    ? `<img src="images/emoji/${currentCommentEmoji}.png" width="55" height="55" alt="emoji-${currentCommentEmoji}">`
+    : ``;
 
   return (
     `<section class="film-details">
@@ -197,7 +208,8 @@ const getFilmPopupMarkup = (film, options) => {
   );
 };
 
-export default class FilmPopup extends AbstractSmartComponent {
+
+export default class FilmPopupComponent extends AbstractSmartComponent {
   constructor(film) {
     super();
     this._film = film;

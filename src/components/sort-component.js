@@ -33,7 +33,8 @@ const getSortMarkup = (currentSortType) => {
   );
 };
 
-export default class Sort extends AbstractComponent {
+
+export default class SortComponent extends AbstractComponent {
   constructor() {
     super();
 
@@ -60,7 +61,7 @@ export default class Sort extends AbstractComponent {
         if (this._currentSortType !== sortType) {
           this._currentSortType = sortType;
           this.redrawElement();
-          handler(this._currentSortType);
+          handler();
         }
       }
     });

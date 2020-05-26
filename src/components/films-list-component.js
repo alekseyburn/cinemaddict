@@ -1,5 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
+
 const getFilmsListMarkup = () => {
   return (
     `<section class="films-list">
@@ -10,7 +11,8 @@ const getFilmsListMarkup = () => {
   );
 };
 
-export default class FilmsList extends AbstractComponent {
+
+export default class FilmsListComponent extends AbstractComponent {
   getTemplate() {
     return getFilmsListMarkup();
   }

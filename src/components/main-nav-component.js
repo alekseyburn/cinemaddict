@@ -1,5 +1,6 @@
 import AbstractComponent from './abstract-component';
 
+
 const getMainNavMarkup = () => {
   return (
     `<nav class="main-navigation">
@@ -8,11 +9,8 @@ const getMainNavMarkup = () => {
   );
 };
 
-export default class MainNav extends AbstractComponent {
-  constructor() {
-    super();
-  }
 
+export default class MainNav extends AbstractComponent {
   getTemplate() {
     return getMainNavMarkup();
   }

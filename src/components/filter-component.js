@@ -1,8 +1,13 @@
 import AbstractComponent from './abstract-component';
+import {FilterType} from '../utils/filter';
+
 
 const getFiltersMarkup = (filters) => {
-  const filtersMarkup = filters.map(({name, title, count, isActive}) => {
-    const countMarkup = `<span class="main-navigation__item-count">${count}</span>`;
+  const filtersMarkup = filters.map((filter) => {
+    const {name, title, count, isActive} = filter;
+    const countMarkup = name !== FilterType.ALL
+      ? `<span class="main-navigation__item-count">${count}</span>`
+      : ``;
     const activeClass = isActive ? `main-navigation__item--active` : ``;
 
     return (

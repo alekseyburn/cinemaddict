@@ -1,4 +1,4 @@
-import ProfileComponent from './components/profile';
+import ProfileComponent from './components/profile-component';
 import PageController from './controllers/page-controller';
 import FilmsModel from './models/films';
 import {generateFilm} from './mocks/films';
