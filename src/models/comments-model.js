@@ -14,7 +14,15 @@ export default class CommentsModel {
   }
 
   addComment(comment) {
+    if (!comment) {
+      return false;
+    }
+
     this._comments = [].concat(this._comments, comment);
+
+    this._callHandlers(this._dataChangeHandlers);
+
+    return true;
   }
 
   removeComment(id) {

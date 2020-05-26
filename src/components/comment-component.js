@@ -39,6 +39,8 @@ export default class CommentComponent extends AbstractComponent {
   }
 
   setDeleteButtonClickHandler(handler) {
-
+    this.getElement()
+      .querySelector(`.film-details__comment-delete`)
+      .addEventListener(`click`, handler);
   }
 }

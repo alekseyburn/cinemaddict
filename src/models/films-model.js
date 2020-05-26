@@ -28,15 +28,19 @@ export default class FilmsModel {
     this._callHandlers(this._filterChangeHandlers);
   }
 
-  updateFilm(id, film) {
-    const index = this._films.findIndex((it) => it.id === id);
+  getFilm(id) {
+    return this._films.find((film) => film.id === id);
+  }
+
+  updateFilm(id, filmData) {
+    const index = this._films.findIndex((film) => film.id === id);
     if (index === -1) {
       return false;
     }
 
     this._films = [].concat(
         this._films.slice(0, index),
-        film,
+        filmData,
         this._films.slice(index + 1)
     );
 

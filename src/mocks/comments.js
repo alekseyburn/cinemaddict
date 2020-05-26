@@ -29,6 +29,7 @@ export const EMOJI = [
 
 export const generateComment = () => {
   return {
+    id: String(new Date() + Math.random()),
     author: getRandomFullName(),
     date: getRandomDate(new Date(2000, 0), new Date(Date.now())),
     emotion: getRandomArrayItem(EMOJI),

@@ -103,7 +103,8 @@ export default class PageController {
       const filmController = new FilmController(
           filmsContainerElement,
           this._onDataChange,
-          this._onViewChange
+          this._onViewChange,
+          this._filmsModel
       );
       filmController.render(film);
       return filmController;
@@ -196,7 +197,6 @@ export default class PageController {
     const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
     if (isSuccess) {
       filmController.render(newData);
-      // this._updateFilms(this._cardsShownCount);
     }
   }
 
