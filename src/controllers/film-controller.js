@@ -3,6 +3,7 @@ import FilmPopupComponent from '../components/film-popup-component';
 import CommentsModel from '../models/comments-model';
 import CommentController from './comment-controller';
 import {render, remove, replace} from '../utils/dom';
+import {getRandomFullName} from '../utils/random';
 
 
 const Mode = {
@@ -27,6 +28,7 @@ export default class FilmController {
     this._commentControllers = [];
 
     this._escKeyHandler = this._escKeyHandler.bind(this);
+    this._ctrlEnterKeyHandler = this._ctrlEnterKeyHandler.bind(this);
     this._onCommentsDataChange = this._onCommentsDataChange.bind(this);
   }
 
@@ -85,8 +87,6 @@ export default class FilmController {
   destroy() {
     remove(this._filmCardComponent);
     this._removeFilmPopup();
-    // remove(this._filmPopupComponent);
-    // document.removeEventListener(`keydown`, this._escKeyHandler);
   }
 
   _renderComments(comments) {
@@ -105,10 +105,11 @@ export default class FilmController {
   _updateComments() {
     this._commentControllers.forEach((commentController) =>
       commentController.destroy());
+    this._commentControllers = [];
     this._renderComments(this._commentsModel.getComments());
   }
 
-  _onCommentsDataChange(commentController, oldComment, newComment) {
+  _onCommentsDataChange(oldComment, newComment) {
     if (newComment === null) {
       const isCommentRemoved = this._commentsModel.removeComment(oldComment.id);
       if (isCommentRemoved) {
@@ -139,7 +140,9 @@ export default class FilmController {
       }
     }
 
-    // this._filmPopupComponent.rerender();
+    this._filmPopupComponent.update({
+      commentsCount: this._commentsModel.getComments().length
+    });
   }
 
   _renderFilmPopup() {
@@ -165,9 +168,9 @@ export default class FilmController {
 
     render(document.querySelector(`.footer`), this._filmPopupComponent, `afterend`);
 
-    // this._filmPopupComponent.rerender();
     this._renderComments(this._commentsModel.getComments());
     document.addEventListener(`keydown`, this._escKeyHandler);
+    document.addEventListener(`keydown`, this._ctrlEnterKeyHandler);
     this._mode = Mode.POPUP;
   }
 
@@ -175,6 +178,7 @@ export default class FilmController {
     if (this._mode === Mode.POPUP) {
       remove(this._filmPopupComponent);
       document.removeEventListener(`keydown`, this._escKeyHandler);
+      document.removeEventListener(`keydown`, this._ctrlEnterKeyHandler);
       this._mode = Mode.DEFAULT;
     }
   }
@@ -182,6 +186,25 @@ export default class FilmController {
   _escKeyHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Ecs`) {
       this._removeFilmPopup();
+    }
+  }
+
+  _ctrlEnterKeyHandler(evt) {
+    if ((evt.ctrlKey || evt.metaKey) && (evt.key === `Enter`)) {
+      const message = this._filmPopupComponent.getCurrentCommentText();
+      const emotion = this._filmPopupComponent.getCurrentCommentEmoji();
+
+      if (message && emotion) {
+        const newComment = {
+          id: String(new Date() + Math.random()),
+          author: getRandomFullName(),
+          date: new Date(Date.now()),
+          emotion,
+          message,
+        };
+
+        this._onCommentsDataChange(null, newComment);
+      }
     }
   }
 }

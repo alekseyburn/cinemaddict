@@ -15,7 +15,7 @@ export default class CommentController {
 
     this._commentComponent.setDeleteButtonClickHandler((evt) => {
       evt.preventDefault();
-      this._onCommentDataChange(this, comment, null);
+      this._onCommentDataChange(comment, null);
     });
 
     if (oldCommentComponent) {

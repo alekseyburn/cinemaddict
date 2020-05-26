@@ -31,7 +31,7 @@ const getEmojiOptionsMarkup = (currentCommentEmoji) => {
   }).join(``);
 };
 
-const getFilmPopupMarkup = (film, options) => {
+const getFilmPopupMarkup = (film) => {
   const {
     actors,
     comments,
@@ -50,11 +50,6 @@ const getFilmPopupMarkup = (film, options) => {
     isMarkedAsWatched,
     isFavorite,
   } = film;
-
-  const {currentCommentEmoji} = options;
-  const currentEmojiMarkup = currentCommentEmoji
-    ? `<img src="images/emoji/${currentCommentEmoji}.png" width="55" height="55" alt="emoji-${currentCommentEmoji}">`
-    : ``;
 
   return (
     `<section class="film-details">
@@ -107,7 +102,7 @@ const getFilmPopupMarkup = (film, options) => {
                   <td class="film-details__cell">${country}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Genres</td>
+                  <td class="film-details__term">Genre${genres.length > 1 ? `s` : ``}</td>
                   <td class="film-details__cell">
                     ${getGenresMarkup(genres)}
                   </td>
@@ -129,7 +124,7 @@ const getFilmPopupMarkup = (film, options) => {
               ${isAddedToWatchlist ? `checked` : ``}
             >
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-    
+
             <input
               type="checkbox"
               class="film-details__control-input visually-hidden"
@@ -138,7 +133,7 @@ const getFilmPopupMarkup = (film, options) => {
               ${isMarkedAsWatched ? `checked` : ``}
             >
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-    
+
             <input
               type="checkbox"
               class="film-details__control-input visually-hidden"
@@ -159,15 +154,14 @@ const getFilmPopupMarkup = (film, options) => {
 
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label">
-                ${currentEmojiMarkup}
               </div>
-    
+
               <label class="film-details__comment-label">
                 <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
               </label>
 
               <div class="film-details__emoji-list">
-                ${getEmojiOptionsMarkup(currentCommentEmoji)}
+                ${getEmojiOptionsMarkup(null)}
               </div>
             </div>
           </section>
@@ -192,15 +186,7 @@ export default class FilmPopupComponent extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return getFilmPopupMarkup(this._film, {currentCommentEmoji: this._currentCommentEmoji});
-  }
-
-  recoveryListeners() {
-    this.setCloseButtonClickHandler(this._closeButtonClickHandler);
-    this.setAddToWatchlistClickHandler(this._addToWatchlistClickHandler);
-    this.setMarkAsWatchedClickHandler(this._markAsWatchedClickHandler);
-    this.setFavoriteClickHandler(this._favofiteClickHandler);
-    this._subscribeOnEvents();
+    return getFilmPopupMarkup(this._film);
   }
 
   setCloseButtonClickHandler(handler) {
@@ -234,14 +220,51 @@ export default class FilmPopupComponent extends AbstractSmartComponent {
     this._favofiteClickHandler = handler;
   }
 
+  getCurrentCommentText() {
+    return this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .value;
+  }
+
+  getCurrentCommentEmoji() {
+    return this._currentCommentEmoji;
+  }
+
+  update(options) {
+    const {
+      currentCommentEmoji,
+      commentsCount,
+    } = options;
+
+    if (currentCommentEmoji) {
+      this._currentCommentEmoji = currentCommentEmoji;
+      const currentEmojiContainer = this.getElement()
+        .querySelector(`.film-details__add-emoji-label`);
+      const currentEmojiMarkup = currentCommentEmoji
+        ? `<img src="images/emoji/${currentCommentEmoji}.png" width="55" height="55" alt="emoji-${currentCommentEmoji}">`
+        : ``;
+      currentEmojiContainer.innerHTML = currentEmojiMarkup;
+
+      const emojiListElement = this.getElement()
+        .querySelector(`.film-details__emoji-list`);
+      emojiListElement.innerHTML = getEmojiOptionsMarkup(currentCommentEmoji);
+    }
+
+    if (commentsCount) {
+      const commentsCountElement = this.getElement()
+        .querySelector(`.film-details__comments-count`);
+      commentsCountElement.innerHTML = commentsCount;
+    }
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
 
     element.querySelector(`.film-details__emoji-list`)
       .addEventListener(`change`, (evt) => {
         evt.preventDefault();
-        this._currentCommentEmoji = evt.target.value;
-        this.rerender();
+        const currentCommentEmoji = evt.target.value;
+        this.update({currentCommentEmoji});
       });
   }
 }
