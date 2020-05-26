@@ -31,7 +31,7 @@ export const generateComment = () => {
   return {
     author: getRandomFullName(),
     date: getRandomDate(new Date(2000, 0), new Date(Date.now())),
-    emoji: getRandomArrayItem(EMOJI),
+    emotion: getRandomArrayItem(EMOJI),
     message: getRandomArrayItem(MESSAGES),
   };
 };

@@ -1,5 +1,7 @@
 import FilmCardComponent from '../components/film-card-component';
 import FilmPopupComponent from '../components/film-popup-component';
+import CommentsModel from '../models/comments-model';
+import CommentsController from './comment-controller';
 import {render, remove, replace} from '../utils/dom';
 
 
@@ -19,14 +21,20 @@ export default class FilmController {
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
 
+    this._commentsModel = new CommentsModel();
+    this._commentControllers = [];
+
     this._escKeyHandler = this._escKeyHandler.bind(this);
   }
 
   render(film) {
+    this._commentsModel.setComments(film.comments);
+
     const oldFilmCardComponent = this._filmCardComponent;
     const oldFilmPopupComponent = this._filmPopupComponent;
     this._filmCardComponent = new FilmCardComponent(film);
     this._filmPopupComponent = new FilmPopupComponent(film);
+
 
     this._filmCardComponent.setClickHandler(() => {
       this._showFilmPopup();
@@ -85,6 +93,10 @@ export default class FilmController {
     remove(this._filmCardComponent);
     remove(this._filmPopupComponent);
     document.removeEventListener(`keydown`, this._escKeyHandler);
+  }
+
+  _renderComments(comments) {
+    // const commentsControllers = comments
   }
 
   _showFilmPopup() {

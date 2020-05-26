@@ -1,6 +1,5 @@
 import AbstractSmartComponent from './abstract-smart-component';
 import {
-  formatCommentDate,
   formatDDMonthYYYY,
   formatRuntime,
 } from '../utils/time';
@@ -12,35 +11,6 @@ const getGenresMarkup = (genres) => {
   return genres
     .map((genre) => `<span class="film-details__genre">${genre}</span>`)
     .join(``);
-};
-
-const getCommentsMarkup = (comments) => {
-  const commentsMarkup = comments.map((comment) => {
-    const {
-      author,
-      date,
-      emoji,
-      message,
-    } = comment;
-
-    return (
-      `<li class="film-details__comment">
-        <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">
-        </span>
-        <div>
-          <p class="film-details__comment-text">${message}</p>
-          <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${author}</span>
-            <span class="film-details__comment-day">${formatCommentDate(date)}</span>
-            <button class="film-details__comment-delete">Delete</button>
-          </p>
-        </div>
-      </li>`
-    );
-  }).join(``);
-
-  return commentsMarkup;
 };
 
 const getEmojiOptionsMarkup = (currentCommentEmoji) => {
@@ -185,7 +155,6 @@ const getFilmPopupMarkup = (film, options) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
             <ul class="film-details__comments-list">
-              ${getCommentsMarkup(comments)}
             </ul>
 
             <div class="film-details__new-comment">

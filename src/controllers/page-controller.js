@@ -195,8 +195,8 @@ export default class PageController {
   _onDataChange(filmController, oldData, newData) {
     const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
     if (isSuccess) {
-      // filmController.render(newData);
-      this._updateFilms(this._cardsShownCount);
+      filmController.render(newData);
+      // this._updateFilms(this._cardsShownCount);
     }
   }
 
