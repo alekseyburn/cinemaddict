@@ -1,6 +1,6 @@
 import ProfileComponent from './components/profile-component';
 import PageController from './controllers/page-controller';
-import FilmsModel from './models/films';
+import FilmsModel from './models/films-model';
 import {generateFilm} from './mocks/films';
 import {generateArray} from './utils/random';
 

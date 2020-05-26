@@ -1,6 +1,7 @@
 import {FilterType, getFilmsByFilter} from '../utils/filter';
 
-export default class Films {
+
+export default class FilmsModel {
   constructor() {
     this._films = [];
     this._activeFilterType = FilterType.ALL;

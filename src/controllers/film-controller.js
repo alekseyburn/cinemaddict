@@ -1,6 +1,5 @@
 import FilmCardComponent from '../components/film-card-component';
 import FilmPopupComponent from '../components/film-popup-component';
-
 import {render, remove, replace} from '../utils/dom';
 
 

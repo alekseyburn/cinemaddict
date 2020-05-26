@@ -32,6 +32,7 @@ const getSortedFilms = (films, sortType, from, to) => {
   return sortedFilms.slice(from, to);
 };
 
+
 export default class PageController {
   constructor(container, filmsModel) {
     this._container = container;
@@ -194,7 +195,8 @@ export default class PageController {
   _onDataChange(filmController, oldData, newData) {
     const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
     if (isSuccess) {
-      filmController.render(newData);
+      // filmController.render(newData);
+      this._updateFilms(this._cardsShownCount);
     }
   }
 
