@@ -1,6 +1,7 @@
 import AbstractComponent from './abstract-component';
 import {formatRuntime} from '../utils/time';
 
+
 const getFilmCardMarkup = ({
   comments,
   description,
@@ -50,7 +51,8 @@ const getFilmCardMarkup = ({
   );
 };
 
-export default class FilmCard extends AbstractComponent {
+
+export default class FilmCardComponent extends AbstractComponent {
   constructor(film) {
     super();
     this._film = film;

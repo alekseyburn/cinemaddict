@@ -73,6 +73,7 @@ export const generateFilm = () => {
   const filmNumber = getRandomNumber(0, FILMS.length - 1);
 
   return {
+    id: String(new Date() + Math.random()),
     actors: generateArray(getRandomFullName, getRandomNumber(3, 9)),
     comments: generateArray(generateComment, getRandomNumber(0, 5)),
     country: getRandomArrayItem(COUNTRIES),
@@ -87,5 +88,8 @@ export const generateFilm = () => {
     releaseDate: getRandomDate(new Date(1900, 0), new Date(Date.now())),
     runtime: getRandomNumber(45, 210),
     writers: generateArray(getRandomFullName, getRandomNumber(1, 3)),
+    isAddedToWatchlist: Math.random() > 0.5,
+    isMarkedAsWatched: Math.random() > 0.5,
+    isFavorite: Math.random() > 0.9,
   };
 };

@@ -3,11 +3,13 @@ import {
   SURNAMES,
 } from '../mocks/common';
 
-export const getRandomNumber = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+export const getRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
-export const getRandomArrayItem = (array) =>
-  array[getRandomNumber(0, array.length - 1)];
+export const getRandomArrayItem = (array) => {
+  return array[getRandomNumber(0, array.length - 1)];
+};
 
 export const getShuffledArray = (array, numberOfElements) => {
   numberOfElements = numberOfElements || array.length;
@@ -22,10 +24,12 @@ export const getRandomDate = (minDate, maxDate) => {
   return new Date(randomUnixDate);
 };
 
-export const getRandomFullName = () =>
-  `${getRandomArrayItem(NAMES)} ${getRandomArrayItem(SURNAMES)}`;
+export const getRandomFullName = () => {
+  return `${getRandomArrayItem(NAMES)} ${getRandomArrayItem(SURNAMES)}`;
+};
 
-export const generateArray = (generationFunction, length) =>
-  Array(length)
+export const generateArray = (generationFunction, length) => {
+  return Array(length)
     .fill(``)
     .map(generationFunction);
+};

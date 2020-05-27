@@ -1,5 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
+
 const getFilmsListExtraMarkup = (title) => {
   return (
     `<section class="films-list--extra">
@@ -11,7 +12,8 @@ const getFilmsListExtraMarkup = (title) => {
   );
 };
 
-export default class FilmsListExtra extends AbstractComponent {
+
+export default class FilmsListExtraComponent extends AbstractComponent {
   constructor(title) {
     super();
     this._title = title;

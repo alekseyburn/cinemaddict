@@ -1,5 +1,6 @@
 import {createElement} from "../utils/dom";
 
+
 export default class AbstractComponent {
   constructor() {
     if (new.target === AbstractComponent) {

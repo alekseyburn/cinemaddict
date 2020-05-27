@@ -1,7 +1,5 @@
 import moment from 'moment';
 
-// Применять тут moment не очень хорошая идея
-// Сделано только изза требований задания
 export const formatRuntime = (runtimeMinutes) => {
   const duration = moment.duration(runtimeMinutes, `minutes`);
   const hours = duration.hours() ? `${duration.hours()}h` : ``;
@@ -9,8 +7,10 @@ export const formatRuntime = (runtimeMinutes) => {
   return `${hours} ${minutes}`;
 };
 
-export const formatDDMonthYYYY = (date) => moment(date)
-  .format(`DD MMMM YYYY`);
+export const formatDDMonthYYYY = (date) => {
+  return moment(date).format(`DD MMMM YYYY`);
+};
 
-export const formatCommentDate = (date) => moment(date)
-  .format(`YYYY/MM/DD hh:mm`);
+export const formatCommentDate = (date) => {
+  return moment(date).format(`YYYY/MM/DD hh:mm`);
+};

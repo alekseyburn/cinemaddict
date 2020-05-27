@@ -10,7 +10,8 @@ const getProfileMarkup = () => {
   );
 };
 
-export default class Profile extends AbstractComponent {
+
+export default class ProfileComponent extends AbstractComponent {
   getTemplate() {
     return getProfileMarkup();
   }
