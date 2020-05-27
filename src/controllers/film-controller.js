@@ -4,7 +4,7 @@ import CommentsModel from '../models/comments-model';
 import CommentController from './comment-controller';
 import {render, remove, replace} from '../utils/dom';
 import {getRandomFullName} from '../utils/random';
-
+import {encode} from 'he';
 
 const Mode = {
   DEFAULT: `default`,
@@ -191,7 +191,7 @@ export default class FilmController {
 
   _ctrlEnterKeyHandler(evt) {
     if ((evt.ctrlKey || evt.metaKey) && (evt.key === `Enter`)) {
-      const message = this._filmPopupComponent.getCurrentCommentText();
+      const message = encode(this._filmPopupComponent.getCurrentCommentText());
       const emotion = this._filmPopupComponent.getCurrentCommentEmoji();
 
       if (message && emotion) {
