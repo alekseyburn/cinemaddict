@@ -1,12 +1,13 @@
 import FilmController from '../controllers/film-controller';
-import FilterController from '../controllers/filter-controller';
-import FilmsMainComponent from '../components/films-main-component';
 import FilmsListComponent from '../components/films-list-component';
 import FilmsListExtraComponent from '../components/films-list-extra-component';
+import FilmsMainComponent from '../components/films-main-component';
+import FilterController from '../controllers/filter-controller';
 import LoadMoreButtonComponent from '../components/load-more-component';
 import MainNavComponent from '../components/main-nav-component';
 import NoFilmsComponent from '../components/no-films-component';
 import SortComponent, {SortType} from '../components/sort-component';
+import StatisticsComponent from '../components/statistics-component';
 
 import {render, remove} from '../utils/dom';
 
@@ -46,6 +47,8 @@ export default class PageController {
     this._sortComponent = new SortComponent();
     this._filmsMainComponent = new FilmsMainComponent();
     this._filmsListComponent = new FilmsListComponent();
+    this._statisticsComponent = new StatisticsComponent();
+
     this._filmsListContainer = null;
     this._loadMoreButtonComponent = new LoadMoreButtonComponent();
 
@@ -54,6 +57,7 @@ export default class PageController {
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
+    this._mainNavClickHandler = this._mainNavClickHandler.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
     this._filmsModel.setFilterChangeHandler(this._onFilterChange);
   }
@@ -62,6 +66,7 @@ export default class PageController {
     const films = this._filmsModel.getFilms();
 
     render(this._container, this._mainNavComponent);
+    this._mainNavComponent.setNavItemClickHandler(this._mainNavClickHandler);
     const filtersController = new FilterController(
         this._mainNavComponent.getElement(),
         this._filmsModel
@@ -70,6 +75,9 @@ export default class PageController {
 
     render(this._container, this._sortComponent);
     render(this._container, this._filmsMainComponent);
+    render(this._container, this._statisticsComponent);
+    this._statisticsComponent.hide();
+
     const filmsMainElement = this._filmsMainComponent.getElement();
     render(filmsMainElement, this._filmsListComponent);
 
@@ -93,11 +101,6 @@ export default class PageController {
     this._renderExtraFilmLists();
   }
 
-  _removeFilms() {
-    this._shownFilmsControllers.forEach((filmController) => filmController.destroy());
-    this._shownFilmsControllers = [];
-  }
-
   _renderFilms(filmsContainerElement, films) {
     const filmsControllers = films.map((film) => {
       const filmController = new FilmController(
@@ -113,16 +116,9 @@ export default class PageController {
     this._shownFilmsControllers = this._shownFilmsControllers.concat(filmsControllers);
   }
 
-  _renderLoadMoreButton() {
-    remove(this._loadMoreButtonComponent);
-
-    if (this._cardsShownCount >= this._filmsModel.getFilms().length) {
-      return;
-    }
-
-    render(this._filmsListComponent.getElement(), this._loadMoreButtonComponent);
-
-    this._loadMoreButtonComponent.setClickHandler(this._onLoadMoreButtonClick);
+  _removeFilms() {
+    this._shownFilmsControllers.forEach((filmController) => filmController.destroy());
+    this._shownFilmsControllers = [];
   }
 
   _updateFilms(count) {
@@ -139,6 +135,18 @@ export default class PageController {
     );
     this._renderLoadMoreButton();
     this._renderExtraFilmLists();
+  }
+
+  _renderLoadMoreButton() {
+    remove(this._loadMoreButtonComponent);
+
+    if (this._cardsShownCount >= this._filmsModel.getFilms().length) {
+      return;
+    }
+
+    render(this._filmsListComponent.getElement(), this._loadMoreButtonComponent);
+
+    this._loadMoreButtonComponent.setClickHandler(this._onLoadMoreButtonClick);
   }
 
   _renderExtraFilmLists() {
@@ -203,5 +211,17 @@ export default class PageController {
   _onViewChange() {
     this._shownFilmsControllers
       .forEach((it) => it.setDefaultView());
+  }
+
+  _mainNavClickHandler(navItem) {
+    if (navItem === `stats`) {
+      this._statisticsComponent.show();
+      this._sortComponent.hide();
+      this._filmsMainComponent.hide();
+    } else {
+      this._statisticsComponent.hide();
+      this._sortComponent.show();
+      this._filmsMainComponent.show();
+    }
   }
 }

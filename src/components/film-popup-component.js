@@ -1,4 +1,4 @@
-import AbstractSmartComponent from './abstract-smart-component';
+import AbstractComponent from './abstract-component';
 import {
   formatDDMonthYYYY,
   formatRuntime,
@@ -172,7 +172,7 @@ const getFilmPopupMarkup = (film) => {
 };
 
 
-export default class FilmPopupComponent extends AbstractSmartComponent {
+export default class FilmPopupComponent extends AbstractComponent {
   constructor(film) {
     super();
     this._film = film;
