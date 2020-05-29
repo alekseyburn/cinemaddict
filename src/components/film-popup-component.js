@@ -4,7 +4,7 @@ import {
   formatRuntime,
 } from '../utils/time';
 
-import {EMOJI} from '../mocks/comments';
+import {EMOJI} from '../utils/const';
 
 
 const getGenresMarkup = (genres) => {
@@ -34,12 +34,13 @@ const getEmojiOptionsMarkup = (currentCommentEmoji) => {
 const getFilmPopupMarkup = (film) => {
   const {
     actors,
+    altName,
+    ageRating,
     comments,
     country,
     description,
     director,
     genres,
-    mpaaRating,
     name,
     poster,
     rating,
@@ -60,14 +61,14 @@ const getFilmPopupMarkup = (film) => {
           </div>
           <div class="film-details__info-wrap">
             <div class="film-details__poster">
-              <img class="film-details__poster-img" src="./images/posters/${poster}" alt="${name}">
-              <p class="film-details__age">${mpaaRating}</p>
+              <img class="film-details__poster-img" src="${poster}" alt="${name}">
+              <p class="film-details__age">${ageRating}</p>
             </div>
 
             <div class="film-details__info">
               <div class="film-details__info-head">
                 <div class="film-details__title-wrap">
-                  <h3 class="film-details__title">${name}</h3>
+                  <h3 class="film-details__title">${altName}</h3>
                   <p class="film-details__title-original">Original: ${name}</p>
                 </div>
 

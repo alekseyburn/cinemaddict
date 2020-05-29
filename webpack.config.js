@@ -12,7 +12,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, `public`),
     watchContentBase: true,
-    port: 1337,
+    port: 8080,
   },
   plugins: [
     new MomentLocalesPlugin(),
