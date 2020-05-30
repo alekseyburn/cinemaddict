@@ -2,6 +2,7 @@ import FilmCardComponent from '../components/film-card-component';
 import FilmPopupComponent from '../components/film-popup-component';
 import CommentsModel from '../models/comments-model';
 import CommentController from './comment-controller';
+import FilmModel from '../models/film-model';
 import {render, remove, replace} from '../utils/dom';
 import {getRandomFullName} from '../utils/random';
 import {encode} from 'he';
@@ -33,7 +34,7 @@ export default class FilmController {
   }
 
   render(film) {
-    this._filmData = Object.assign({}, film);
+    this._filmData = film;
     this._commentsModel.setComments(film.comments);
 
     const oldFilmCardComponent = this._filmCardComponent;
