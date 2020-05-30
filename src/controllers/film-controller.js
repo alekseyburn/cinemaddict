@@ -47,28 +47,34 @@ export default class FilmController {
 
     this._filmCardComponent.setAddToWatchlistClickHandler((evt) => {
       evt.preventDefault();
+      const newData = FilmModel.clone(this._filmData);
+      newData.isAddedToWatchlist = !newData.isAddedToWatchlist;
       this._onDataChange(
           this,
           this._filmData,
-          Object.assign({}, this._filmData, {isAddedToWatchlist: !this._filmData.isAddedToWatchlist})
+          newData
       );
     });
 
     this._filmCardComponent.setMarkAsWatchedClickHandler((evt) => {
       evt.preventDefault();
+      const newData = FilmModel.clone(this._filmData);
+      newData.isMarkedAsWatched = !newData.isMarkedAsWatched;
       this._onDataChange(
           this,
           this._filmData,
-          Object.assign({}, this._filmData, {isMarkedAsWatched: !this._filmData.isMarkedAsWatched})
+          newData
       );
     });
 
     this._filmCardComponent.setFavoriteClickHandler((evt) => {
       evt.preventDefault();
+      const newData = FilmModel.clone(this._filmData);
+      newData.isFavorite = !newData.isFavorite;
       this._onDataChange(
           this,
           this._filmData,
-          Object.assign({}, this._filmData, {isFavorite: !this._filmData.isFavorite})
+          newData
       );
     });
 

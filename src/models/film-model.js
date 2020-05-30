@@ -27,6 +27,7 @@ export default class FilmModel {
   toRAW() {
     return {
       "id": this.id,
+      "comments": [],
       "film_info": {
         "title": this.name,
         "alternative_title": this.altName,

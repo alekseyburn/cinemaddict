@@ -203,22 +203,23 @@ export default class PageController {
   }
 
   _onDataChange(filmController, oldData, newData) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
+    // const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
 
-    if (isSuccess) {
-      filmController.render(newData);
-    }
-    // this._api.updateFilm(oldData.id, newData)
-    //   .then((filmModel) => {
-    //     const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
+    // if (isSuccess) {
+    //   filmController.render(newData);
+    // }
+    console.log(newData);
+    this._api.updateFilm(oldData.id, newData)
+      .then((filmModel) => {
+        const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
 
-    //     if (isSuccess) {
-    //       filmController.render(newData);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
+        if (isSuccess) {
+          filmController.render(newData);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }
 
   _onViewChange() {
