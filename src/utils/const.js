@@ -1,3 +1,10 @@
+export const EMOJI = [
+  `smile`,
+  `sleeping`,
+  `puke`,
+  `angry`,
+];
+
 export const NAMES = [
   `Emma`,
   `Olivia`,
@@ -112,24 +119,4 @@ export const SURNAMES = [
   `Garcia`,
   `Rodriguez`,
   `Wilson`,
-];
-
-export const COUNTRIES = [
-  `United States`,
-  `United Kingdom`,
-  `China`,
-  `France`,
-  `Japan`,
-  `Germany`,
-  `Republic of Korea`,
-  `Canada`,
-  `Australia`,
-  `India`,
-  `New`,
-  `Hong`,
-  `Italy`,
-  `Spain`,
-  `Belgium`,
-  `Russian Federation`,
-  `Mexico`,
 ];
