@@ -212,8 +212,8 @@ export default class PageController {
           // filmController.render(newData);
         }
       })
-      .catch((error) => {
-        console.log(error.message);
+      .catch(() => {
+        filmController.shake();
       });
   }
 

@@ -7,6 +7,9 @@ import {render, remove, replace} from '../utils/dom';
 import {getRandomFullName} from '../utils/random';
 import {encode} from 'he';
 
+
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 const Mode = {
   DEFAULT: `default`,
   POPUP: `popup`,
@@ -94,6 +97,16 @@ export default class FilmController {
   destroy() {
     remove(this._filmCardComponent);
     this._removeFilmPopup();
+  }
+
+  shake() {
+    this._filmCardComponent
+      .getElement().classList.add(`shake`);
+
+    setTimeout(() => {
+      this._filmCardComponent
+        .getElement().classList.remove(`shake`);
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _renderComments(comments) {
