@@ -134,6 +134,7 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     super.show();
 
     this.rerender();
+    this._renderChart();
   }
 
   recoveryListeners() {}

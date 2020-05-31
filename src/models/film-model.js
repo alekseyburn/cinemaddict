@@ -48,7 +48,7 @@ export default class FilmModel {
       "user_details": {
         "watchlist": this.isAddedToWatchlist,
         "already_watched": this.isMarkedAsWatched,
-        "watching_date": new Date(Date.now()).toISOString(),
+        "watching_date": this.watchingDate.toISOString(),
         "favorite": this.isFavorite
       }
     };

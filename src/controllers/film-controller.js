@@ -34,7 +34,7 @@ export default class FilmController {
   }
 
   render(film) {
-    this._filmData = film;
+    this._filmData = FilmModel.clone(film);
     this._commentsModel.setComments(film.comments);
 
     const oldFilmCardComponent = this._filmCardComponent;
@@ -158,21 +158,23 @@ export default class FilmController {
     this._filmPopupComponent = new FilmPopupComponent(this._filmData);
 
     this._filmPopupComponent.setAddToWatchlistClickHandler(() => {
-      this._onDataChange(this, this._filmData, Object.assign({}, this._filmData, {isAddedToWatchlist: !this._filmData.isAddedToWatchlist}));
+      this._filmData.isAddedToWatchlist = !this._filmData.isAddedToWatchlist;
     });
 
     this._filmPopupComponent.setMarkAsWatchedClickHandler(() => {
-      this._onDataChange(this, this._filmData, Object.assign({}, this._filmData, {isMarkedAsWatched: !this._filmData.isMarkedAsWatched}));
+      this._filmData.isMarkedAsWatched = !this._filmData.isMarkedAsWatched;
+      this._filmData.watchingDate = new Date(Date.now());
     });
 
     this._filmPopupComponent.setFavoriteClickHandler(() => {
-      this._onDataChange(this, this._filmData, Object.assign({}, this._filmData, {isFavorite: !this._filmData.isFavorite}));
+      this._filmData.isFavorite = !this._filmData.isFavorite;
     });
 
     this._filmPopupComponent.setCloseButtonClickHandler(() => {
       this._removeFilmPopup();
     });
 
+    document.body.classList.add(`hide-overflow`);
     render(document.querySelector(`.footer`), this._filmPopupComponent, `afterend`);
 
     this._renderComments(this._commentsModel.getComments());
@@ -183,7 +185,14 @@ export default class FilmController {
 
   _removeFilmPopup() {
     if (this._mode === Mode.POPUP) {
+      const newData = FilmModel.clone(this._filmData);
+      this._onDataChange(
+          this,
+          this._filmData,
+          newData
+      );
       remove(this._filmPopupComponent);
+      document.body.classList.remove(`hide-overflow`);
       document.removeEventListener(`keydown`, this._escKeyHandler);
       document.removeEventListener(`keydown`, this._ctrlEnterKeyHandler);
       this._mode = Mode.DEFAULT;

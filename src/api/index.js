@@ -30,7 +30,6 @@ export default class API {
   }
 
   updateFilm(id, data) {
-    console.log(data.toRAW());
     return this._load({
       url: `movies/${id}`,
       method: Method.PUT,
