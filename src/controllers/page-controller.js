@@ -108,7 +108,7 @@ export default class PageController {
           filmsContainerElement,
           this._onDataChange,
           this._onViewChange,
-          this._filmsModel
+          this._api
       );
       filmController.render(film);
       return filmController;

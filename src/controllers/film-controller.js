@@ -17,11 +17,11 @@ const Mode = {
 
 
 export default class FilmController {
-  constructor(container, onDataChange, onViewChange, filmsModel) {
+  constructor(container, onDataChange, onViewChange, api) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    this._filmsModel = filmsModel;
+    this._api = api;
     this._filmData = null;
     this._mode = Mode.DEFAULT;
 
@@ -38,11 +38,9 @@ export default class FilmController {
 
   render(film) {
     this._filmData = FilmModel.clone(film);
-    this._commentsModel.setComments(film.comments);
 
     const oldFilmCardComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCardComponent(this._filmData);
-
 
     this._filmCardComponent.setClickHandler(() => {
       this._renderFilmPopup();
@@ -177,11 +175,15 @@ export default class FilmController {
 
     document.body.classList.add(`hide-overflow`);
     render(document.querySelector(`.footer`), this._filmPopupComponent, `afterend`);
-
-    this._renderComments(this._commentsModel.getComments());
     document.addEventListener(`keydown`, this._escKeyHandler);
     document.addEventListener(`keydown`, this._ctrlEnterKeyHandler);
     this._mode = Mode.POPUP;
+
+    this._api.getComments(this._filmData.id)
+      .then((comments) => {
+        this._commentsModel.setComments(comments);
+        this._renderComments(this._commentsModel.getComments());
+      });
   }
 
   _removeFilmPopup() {
