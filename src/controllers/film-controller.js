@@ -6,6 +6,7 @@ import FilmModel from '../models/film-model';
 import {render, remove, replace} from '../utils/dom';
 import {getRandomFullName} from '../utils/random';
 import {encode} from 'he';
+import CommentModel from '../models/comment-model';
 
 
 const SHAKE_ANIMATION_TIMEOUT = 600;
@@ -117,38 +118,36 @@ export default class FilmController {
 
   _onCommentsDataChange(oldComment, newComment) {
     if (newComment === null) {
-      const isCommentRemoved = this._commentsModel.removeComment(oldComment.id);
-      if (isCommentRemoved) {
-        this._updateComments();
-        this._onDataChange(
-            this,
-            this._filmData,
-            Object.assign(
-                {},
-                this._filmData,
-                {comments: this._commentsModel.getComments()}
-            )
-        );
-      }
-    } else {
-      const isCommentAdded = this._commentsModel.addComment(newComment);
-      if (isCommentAdded) {
-        this._updateComments();
-        this._onDataChange(
-            this,
-            this._filmData,
-            Object.assign(
-                {},
-                this._filmData,
-                {comments: this._commentsModel.getComments()}
-            )
-        );
-      }
-    }
+      this._api.removeComment(oldComment.id)
+        .then(() => {
+          const isCommentRemoved = this._commentsModel.removeComment(oldComment.id);
 
-    this._filmPopupComponent.update({
-      commentsCount: this._commentsModel.getComments().length
-    });
+          if (isCommentRemoved) {
+            this._updateComments();
+            this._filmPopupComponent.update({
+              commentsCount: this._commentsModel.getComments().length
+            });
+          }
+        })
+        .catch(() => {
+
+        });
+    } else {
+      this._api.addComment(this._filmData.id, newComment)
+        .then(() => {
+          const isCommentAdded = this._commentsModel.addComment(newComment);
+
+          if (isCommentAdded) {
+            this._updateComments();
+            this._filmPopupComponent.update({
+              commentsCount: this._commentsModel.getComments().length
+            });
+          }
+        })
+        .catch(() => {
+
+        });
+    }
   }
 
   _renderFilmPopup() {
@@ -214,13 +213,13 @@ export default class FilmController {
       const emotion = this._filmPopupComponent.getCurrentCommentEmoji();
 
       if (message && emotion) {
-        const newComment = {
+        const newComment = new CommentModel({
           id: String(new Date() + Math.random()),
           author: getRandomFullName(),
           date: new Date(Date.now()),
           emotion,
-          message,
-        };
+          comment: message,
+        });
 
         this._onCommentsDataChange(null, newComment);
       }

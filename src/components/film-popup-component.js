@@ -251,7 +251,7 @@ export default class FilmPopupComponent extends AbstractComponent {
       emojiListElement.innerHTML = getEmojiOptionsMarkup(currentCommentEmoji);
     }
 
-    if (commentsCount) {
+    if (commentsCount !== undefined) {
       const commentsCountElement = this.getElement()
         .querySelector(`.film-details__comments-count`);
       commentsCountElement.innerHTML = commentsCount;
