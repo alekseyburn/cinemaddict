@@ -6,7 +6,6 @@ export default class FilmModel {
     this.altName = data[`film_info`][`alternative_title`];
     this.ageRating = data[`film_info`][`age_rating`];
     this.comments = data[`comments`];
-    this.comments = []; // temporary solution
     this.country = data[`film_info`][`release`][`release_country`];
     this.description = data[`film_info`][`description`];
     this.director = data[`film_info`][`director`];
@@ -27,7 +26,7 @@ export default class FilmModel {
   toRAW() {
     return {
       "id": this.id,
-      "comments": [],
+      "comments": this.comments,
       "film_info": {
         "title": this.name,
         "alternative_title": this.altName,

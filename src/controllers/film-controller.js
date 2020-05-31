@@ -52,33 +52,21 @@ export default class FilmController {
       evt.preventDefault();
       const newData = FilmModel.clone(this._filmData);
       newData.isAddedToWatchlist = !newData.isAddedToWatchlist;
-      this._onDataChange(
-          this,
-          this._filmData,
-          newData
-      );
+      this._onDataChange(this, this._filmData, newData);
     });
 
     this._filmCardComponent.setMarkAsWatchedClickHandler((evt) => {
       evt.preventDefault();
       const newData = FilmModel.clone(this._filmData);
       newData.isMarkedAsWatched = !newData.isMarkedAsWatched;
-      this._onDataChange(
-          this,
-          this._filmData,
-          newData
-      );
+      this._onDataChange(this, this._filmData, newData);
     });
 
     this._filmCardComponent.setFavoriteClickHandler((evt) => {
       evt.preventDefault();
       const newData = FilmModel.clone(this._filmData);
       newData.isFavorite = !newData.isFavorite;
-      this._onDataChange(
-          this,
-          this._filmData,
-          newData
-      );
+      this._onDataChange(this, this._filmData, newData);
     });
 
     if (oldFilmCardComponent) {
