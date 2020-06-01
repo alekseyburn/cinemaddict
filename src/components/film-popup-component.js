@@ -268,6 +268,25 @@ export default class FilmPopupComponent extends AbstractComponent {
     }
   }
 
+  blockInput() {
+    const inputArea = this.getElement()
+      .querySelector(`.film-details__comment-input`);
+    inputArea.disabled = true;
+  }
+
+  unblockInput(isError) {
+    const inputArea = this.getElement()
+      .querySelector(`.film-details__comment-input`);
+    inputArea.disabled = false;
+
+    if (isError) {
+      inputArea.style.boxShadow = `0 0 0 2px red`;
+    } else {
+      inputArea.value = ``;
+      inputArea.style.boxShadow = ``;
+    }
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
 
