@@ -38,7 +38,7 @@ export default class FilmController {
   }
 
   render(film) {
-    this._filmData = FilmModel.clone(film);
+    this.setFilmData(film);
 
     const oldFilmCardComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCardComponent(this._filmData);
@@ -58,6 +58,7 @@ export default class FilmController {
       evt.preventDefault();
       const newData = FilmModel.clone(this._filmData);
       newData.isMarkedAsWatched = !newData.isMarkedAsWatched;
+      newData.watchingDate = new Date(Date.now());
       this._onDataChange(this, this._filmData, newData);
     });
 
@@ -81,6 +82,17 @@ export default class FilmController {
     }
   }
 
+  setFilmData(data) {
+    this._filmData = FilmModel.clone(data);
+    if (this._filmPopupComponent) {
+      this._filmPopupComponent.update({
+        isAddedToWatchlist: this._filmData.isAddedToWatchlist,
+        isFavorite: this._filmData.isFavorite,
+        isMarkedAsWatched: this._filmData.isMarkedAsWatched,
+      });
+    }
+  }
+
   destroy() {
     remove(this._filmCardComponent);
     this._removeFilmPopup();
@@ -94,6 +106,66 @@ export default class FilmController {
       this._filmCardComponent
         .getElement().classList.remove(`shake`);
     }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  _renderFilmPopup() {
+    this._onViewChange();
+
+    this._filmPopupComponent = new FilmPopupComponent(this._filmData);
+
+    this._filmPopupComponent.setAddToWatchlistClickHandler((evt) => {
+      evt.preventDefault();
+      const newData = FilmModel.clone(this._filmData);
+      newData.isAddedToWatchlist = !newData.isAddedToWatchlist;
+      this._onDataChange(this, this._filmData, newData, false);
+    });
+
+    this._filmPopupComponent.setMarkAsWatchedClickHandler((evt) => {
+      evt.preventDefault();
+      const newData = FilmModel.clone(this._filmData);
+      newData.isMarkedAsWatched = !newData.isMarkedAsWatched;
+      newData.watchingDate = new Date(Date.now());
+      this._onDataChange(this, this._filmData, newData, false);
+    });
+
+    this._filmPopupComponent.setFavoriteClickHandler((evt) => {
+      evt.preventDefault();
+      const newData = FilmModel.clone(this._filmData);
+      newData.isFavorite = !newData.isFavorite;
+      this._onDataChange(this, this._filmData, newData, false);
+    });
+
+    this._filmPopupComponent.setCloseButtonClickHandler(() => {
+      this._removeFilmPopup();
+    });
+
+    document.body.classList.add(`hide-overflow`);
+    render(document.querySelector(`.footer`), this._filmPopupComponent, `afterend`);
+    document.addEventListener(`keydown`, this._escKeyHandler);
+    document.addEventListener(`keydown`, this._ctrlEnterKeyHandler);
+    this._mode = Mode.POPUP;
+
+    this._api.getComments(this._filmData.id)
+      .then((comments) => {
+        this._commentsModel.setComments(comments);
+        this._renderComments(this._commentsModel.getComments());
+      });
+  }
+
+  _removeFilmPopup() {
+    if (this._mode === Mode.POPUP) {
+      const newData = FilmModel.clone(this._filmData);
+      this._onDataChange(
+          this,
+          this._filmData,
+          newData
+      );
+      remove(this._filmPopupComponent);
+      document.body.classList.remove(`hide-overflow`);
+      document.removeEventListener(`keydown`, this._escKeyHandler);
+      document.removeEventListener(`keydown`, this._ctrlEnterKeyHandler);
+      this._mode = Mode.DEFAULT;
+    }
   }
 
   _renderComments(comments) {
@@ -147,57 +219,6 @@ export default class FilmController {
         .catch(() => {
 
         });
-    }
-  }
-
-  _renderFilmPopup() {
-    this._onViewChange();
-
-    this._filmPopupComponent = new FilmPopupComponent(this._filmData);
-
-    this._filmPopupComponent.setAddToWatchlistClickHandler(() => {
-      this._filmData.isAddedToWatchlist = !this._filmData.isAddedToWatchlist;
-    });
-
-    this._filmPopupComponent.setMarkAsWatchedClickHandler(() => {
-      this._filmData.isMarkedAsWatched = !this._filmData.isMarkedAsWatched;
-      this._filmData.watchingDate = new Date(Date.now());
-    });
-
-    this._filmPopupComponent.setFavoriteClickHandler(() => {
-      this._filmData.isFavorite = !this._filmData.isFavorite;
-    });
-
-    this._filmPopupComponent.setCloseButtonClickHandler(() => {
-      this._removeFilmPopup();
-    });
-
-    document.body.classList.add(`hide-overflow`);
-    render(document.querySelector(`.footer`), this._filmPopupComponent, `afterend`);
-    document.addEventListener(`keydown`, this._escKeyHandler);
-    document.addEventListener(`keydown`, this._ctrlEnterKeyHandler);
-    this._mode = Mode.POPUP;
-
-    this._api.getComments(this._filmData.id)
-      .then((comments) => {
-        this._commentsModel.setComments(comments);
-        this._renderComments(this._commentsModel.getComments());
-      });
-  }
-
-  _removeFilmPopup() {
-    if (this._mode === Mode.POPUP) {
-      const newData = FilmModel.clone(this._filmData);
-      this._onDataChange(
-          this,
-          this._filmData,
-          newData
-      );
-      remove(this._filmPopupComponent);
-      document.body.classList.remove(`hide-overflow`);
-      document.removeEventListener(`keydown`, this._escKeyHandler);
-      document.removeEventListener(`keydown`, this._ctrlEnterKeyHandler);
-      this._mode = Mode.DEFAULT;
     }
   }
 

@@ -235,9 +235,19 @@ export default class FilmPopupComponent extends AbstractComponent {
     const {
       currentCommentEmoji,
       commentsCount,
+      isAddedToWatchlist,
+      isFavorite,
+      isMarkedAsWatched,
     } = options;
 
-    if (currentCommentEmoji) {
+    const watchlistCheckbox = this.getElement().querySelector(`#watchlist`);
+    const watchedCheckbox = this.getElement().querySelector(`#watched`);
+    const favoriteCheckbox = this.getElement().querySelector(`#favorite`);
+    watchlistCheckbox.checked = isAddedToWatchlist;
+    watchedCheckbox.checked = isMarkedAsWatched;
+    favoriteCheckbox.checked = isFavorite;
+
+    if (currentCommentEmoji !== undefined) {
       this._currentCommentEmoji = currentCommentEmoji;
       const currentEmojiContainer = this.getElement()
         .querySelector(`.film-details__add-emoji-label`);
