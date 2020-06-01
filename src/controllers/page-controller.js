@@ -108,7 +108,7 @@ export default class PageController {
           filmsContainerElement,
           this._onDataChange,
           this._onViewChange,
-          this._filmsModel
+          this._api
       );
       filmController.render(film);
       return filmController;
@@ -202,23 +202,21 @@ export default class PageController {
     this._updateFilms(CARDS_ON_START_COUNT);
   }
 
-  _onDataChange(filmController, oldData, newData) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
-
-    if (isSuccess) {
-      filmController.render(newData);
-    }
-    // this._api.updateFilm(oldData.id, newData)
-    //   .then((filmModel) => {
-    //     const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
-
-    //     if (isSuccess) {
-    //       filmController.render(newData);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
+  _onDataChange(filmController, oldData, newData, isUpdateFilms = true) {
+    this._api.updateFilm(oldData.id, newData)
+      .then((filmModel) => {
+        const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
+        if (isSuccess) {
+          if (isUpdateFilms) {
+            this._updateFilms(this._cardsShownCount);
+          } else {
+            filmController.setFilmData(this._filmsModel.getFilm(newData.id));
+          }
+        }
+      })
+      .catch(() => {
+        filmController.shake();
+      });
   }
 
   _onViewChange() {

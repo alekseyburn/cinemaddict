@@ -1,4 +1,5 @@
 import FilmModel from '../models/film-model';
+import CommentModel from '../models/comment-model';
 
 
 const Method = {
@@ -30,15 +31,36 @@ export default class API {
   }
 
   updateFilm(id, data) {
-    console.log(data.toRAW());
     return this._load({
       url: `movies/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data.toRAW),
+      body: JSON.stringify(data.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
       .then(FilmModel.parseFilm);
+  }
+
+  getComments(filmID) {
+    return this._load({url: `comments/${filmID}`})
+      .then((response) => response.json())
+      .then(CommentModel.parseComments);
+  }
+
+  removeComment(commentID) {
+    return this._load({
+      url: `comments3/${commentID}`,
+      method: Method.DELETE
+    });
+  }
+
+  addComment(filmID, commentData) {
+    return this._load({
+      url: `comments/${filmID}`,
+      method: Method.POST,
+      body: JSON.stringify(commentData.toRAW()),
+      headers: new Headers({"Content-Type": `application/json`})
+    });
   }
 
   _load({

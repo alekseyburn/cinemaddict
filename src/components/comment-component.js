@@ -43,4 +43,18 @@ export default class CommentComponent extends AbstractComponent {
       .querySelector(`.film-details__comment-delete`)
       .addEventListener(`click`, handler);
   }
+
+  startDeleting() {
+    const deleteButton = this.getElement()
+      .querySelector(`.film-details__comment-delete`);
+    deleteButton.innerHTML = `Deleting...`;
+    deleteButton.disabled = true;
+  }
+
+  stopDeleting() {
+    const deleteButton = this.getElement()
+    .querySelector(`.film-details__comment-delete`);
+    deleteButton.innerHTML = `Delete`;
+    deleteButton.disabled = false;
+  }
 }
