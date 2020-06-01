@@ -7,7 +7,7 @@ import LoadMoreButtonComponent from '../components/load-more-component';
 import MainNavComponent from '../components/main-nav-component';
 import NoFilmsComponent from '../components/no-films-component';
 import SortComponent, {SortType} from '../components/sort-component';
-import StatisticsComponent from '../components/statistics-component';
+import StatisticsController from '../controllers/statistics-controller';
 
 import {render, remove} from '../utils/dom';
 
@@ -40,15 +40,15 @@ export default class PageController {
     this._filmsModel = filmsModel;
     this._api = api;
 
-    this._shownFilmsControllers = [];
     this._cardsShownCount = CARDS_ON_START_COUNT;
+    this._shownFilmsControllers = [];
+    this._statisticsController = null;
 
     this._noFilmsComponent = new NoFilmsComponent();
     this._mainNavComponent = new MainNavComponent();
     this._sortComponent = new SortComponent();
     this._filmsMainComponent = new FilmsMainComponent();
     this._filmsListComponent = new FilmsListComponent();
-    this._statisticsComponent = new StatisticsComponent();
 
     this._filmsListContainer = null;
     this._loadMoreButtonComponent = new LoadMoreButtonComponent();
@@ -76,8 +76,13 @@ export default class PageController {
 
     render(this._container, this._sortComponent);
     render(this._container, this._filmsMainComponent);
-    render(this._container, this._statisticsComponent);
-    this._statisticsComponent.hide();
+
+    this._statisticsController = new StatisticsController(
+        this._container,
+        this._filmsModel
+    );
+    this._statisticsController.render();
+    this._statisticsController.hide();
 
     const filmsMainElement = this._filmsMainComponent.getElement();
     render(filmsMainElement, this._filmsListComponent);
@@ -226,11 +231,11 @@ export default class PageController {
 
   _mainNavClickHandler(navItem) {
     if (navItem === `stats`) {
-      this._statisticsComponent.show();
+      this._statisticsController.show();
       this._sortComponent.hide();
       this._filmsMainComponent.hide();
     } else {
-      this._statisticsComponent.hide();
+      this._statisticsController.hide();
       this._sortComponent.show();
       this._filmsMainComponent.show();
     }
