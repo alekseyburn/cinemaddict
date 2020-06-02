@@ -25,8 +25,10 @@ export default class AbstractComponent {
     return this._element;
   }
 
-  removeElement() {
-    this._element = null;
+  hide() {
+    if (this._element) {
+      this._element.classList.add(HIDDEN_CLASS);
+    }
   }
 
   show() {
@@ -35,9 +37,7 @@ export default class AbstractComponent {
     }
   }
 
-  hide() {
-    if (this._element) {
-      this._element.classList.add(HIDDEN_CLASS);
-    }
+  removeElement() {
+    this._element = null;
   }
 }

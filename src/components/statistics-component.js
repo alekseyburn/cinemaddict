@@ -197,13 +197,6 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     }
   }
 
-  setFilterClickHander(handler) {
-    this.getElement().querySelector(`.statistic__filters`)
-      .addEventListener(`input`, handler);
-
-    this._filterClickHandler = handler;
-  }
-
   _renderChart(films) {
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
@@ -288,6 +281,13 @@ export default class StatisticsComponent extends AbstractSmartComponent {
 
   _isDateInRange(date, range) {
     return moment(date).isAfter(moment().subtract(1, `${range}s`));
+  }
+
+  setFilterClickHander(handler) {
+    this.getElement().querySelector(`.statistic__filters`)
+      .addEventListener(`input`, handler);
+
+    this._filterClickHandler = handler;
   }
 }
 

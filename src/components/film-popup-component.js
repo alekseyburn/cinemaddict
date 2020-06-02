@@ -1,8 +1,5 @@
 import AbstractComponent from './abstract-component';
-import {
-  formatDDMonthYYYY,
-  formatRuntime,
-} from '../utils/time';
+import {formatDDMonthYYYY, formatRuntime} from '../utils/time';
 
 
 export const EMOJI = [
@@ -196,37 +193,6 @@ export default class FilmPopupComponent extends AbstractComponent {
     return getFilmPopupMarkup(this._film);
   }
 
-  setCloseButtonClickHandler(handler) {
-    const popupCloseButton = this.getElement().querySelector(`.film-details__close-btn`);
-    popupCloseButton.addEventListener(`click`, handler);
-
-    this._closeButtonClickHandler = handler;
-  }
-
-  setAddToWatchlistClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.film-details__control-label--watchlist`)
-      .addEventListener(`click`, handler);
-
-    this._addToWatchlistClickHandler = handler;
-  }
-
-  setMarkAsWatchedClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.film-details__control-label--watched`)
-      .addEventListener(`click`, handler);
-
-    this._markAsWatchedClickHandler = handler;
-  }
-
-  setFavoriteClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.film-details__control-label--favorite`)
-      .addEventListener(`click`, handler);
-
-    this._favofiteClickHandler = handler;
-  }
-
   getCurrentCommentText() {
     return this.getElement()
       .querySelector(`.film-details__comment-input`)
@@ -302,5 +268,36 @@ export default class FilmPopupComponent extends AbstractComponent {
         const currentCommentEmoji = evt.target.value;
         this.update({currentCommentEmoji});
       });
+  }
+
+  setCloseButtonClickHandler(handler) {
+    const popupCloseButton = this.getElement().querySelector(`.film-details__close-btn`);
+    popupCloseButton.addEventListener(`click`, handler);
+
+    this._closeButtonClickHandler = handler;
+  }
+
+  setAddToWatchlistClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, handler);
+
+    this._addToWatchlistClickHandler = handler;
+  }
+
+  setMarkAsWatchedClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, handler);
+
+    this._markAsWatchedClickHandler = handler;
+  }
+
+  setFavoriteClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, handler);
+
+    this._favofiteClickHandler = handler;
   }
 }

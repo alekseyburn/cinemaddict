@@ -29,11 +29,11 @@ export default class CommentsModel {
     return true;
   }
 
-  setDataChangeHandler(handler) {
-    this._dataChangeHandlers.push(handler);
-  }
-
   _callHandlers(handlers) {
     handlers.forEach((handler) => handler());
+  }
+
+  setDataChangeHandler(handler) {
+    this._dataChangeHandlers.push(handler);
   }
 }

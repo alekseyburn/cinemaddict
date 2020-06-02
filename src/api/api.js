@@ -25,21 +25,15 @@ export default class API {
     this._authorization = authorization;
   }
 
-  getFilms() {
-    return this._load({url: `movies`})
-      .then((response) => response.json())
-      .then(FilmModel.parseFilms);
-  }
-
-  updateFilm(id, data) {
+  addComment(filmID, commentData) {
     return this._load({
-      url: `movies/${id}`,
-      method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
+      url: `comments/${filmID}`,
+      method: Method.POST,
+      body: JSON.stringify(commentData.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then(FilmModel.parseFilm);
+      .then((jsonData) => CommentModel.parseComments(jsonData.comments));
   }
 
   getComments(filmID) {
@@ -55,15 +49,21 @@ export default class API {
     });
   }
 
-  addComment(filmID, commentData) {
+  getFilms() {
+    return this._load({url: `movies`})
+      .then((response) => response.json())
+      .then(FilmModel.parseFilms);
+  }
+
+  updateFilm(id, data) {
     return this._load({
-      url: `comments/${filmID}`,
-      method: Method.POST,
-      body: JSON.stringify(commentData.toRAW()),
+      url: `movies/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(data.toRAW()),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then((response) => response.json())
-      .then((jsonData) => CommentModel.parseComments(jsonData.comments));
+      .then(FilmModel.parseFilm);
   }
 
   _load({
