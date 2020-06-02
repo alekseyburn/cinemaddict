@@ -10,6 +10,10 @@ import SortComponent, {SortType} from '../components/sort-component';
 import StatisticsController from '../controllers/statistics-controller';
 
 import {render, remove} from '../utils/dom';
+import {
+  getUserTitle,
+  getViewedMoviesCount
+} from '../utils/common';
 
 
 const CARDS_ON_START_COUNT = 5;
@@ -65,6 +69,9 @@ export default class PageController {
 
   render() {
     const films = this._filmsModel.getFilms();
+
+    this._updateUserTitle();
+    this._updateFooterStats();
 
     render(this._container, this._mainNavComponent);
     this._mainNavComponent.setNavItemClickHandler(this._mainNavClickHandler);
@@ -214,6 +221,7 @@ export default class PageController {
         if (isSuccess) {
           if (isUpdateFilms) {
             this._updateFilms(this._cardsShownCount);
+            this._updateUserTitle();
           } else {
             filmController.setFilmData(this._filmsModel.getFilm(newData.id));
           }
@@ -239,5 +247,18 @@ export default class PageController {
       this._sortComponent.show();
       this._filmsMainComponent.show();
     }
+  }
+
+  _updateUserTitle() {
+    const profileRatingElement = document
+      .querySelector(`.profile__rating`);
+    const viewedMoviesCount = getViewedMoviesCount(this._filmsModel.getAllFilms());
+    profileRatingElement.innerHTML = getUserTitle(viewedMoviesCount);
+  }
+
+  _updateFooterStats() {
+    const footerStatsElement = document
+      .querySelector(`.footer__statistics`);
+    footerStatsElement.innerHTML = `${this._filmsModel.getAllFilms().length} movies inside`;
   }
 }

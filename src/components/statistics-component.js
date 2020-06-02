@@ -123,7 +123,7 @@ export default class StatisticsComponent extends AbstractSmartComponent {
   constructor() {
     super();
 
-    // this._renderChart();
+    this._filterClickHandler = null;
   }
 
   getTemplate() {
@@ -137,7 +137,16 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     this._renderChart();
   }
 
-  recoveryListeners() {}
+  recoveryListeners() {
+    this.setFilterClickHander(this._filterClickHandler);
+  }
+
+  setFilterClickHander(handler) {
+    this.getElement().querySelector(`.statistic__filters`)
+      .addEventListener(`input`, handler);
+
+    this._filterClickHandler = handler;
+  }
 
   _renderChart() {
     renderChart();

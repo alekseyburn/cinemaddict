@@ -6,7 +6,8 @@ import ProfileComponent from './components/profile-component';
 import {render} from './utils/dom';
 
 
-const AUTHORIZATION = `Basic k5duwggfc4`;
+const AUTHORIZATION = `Basic k5duwggfc4324324`;
+// const AUTHORIZATION = `Basic k5duwggfc4`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 const api = new API(END_POINT, AUTHORIZATION);

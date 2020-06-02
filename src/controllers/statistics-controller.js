@@ -15,6 +15,9 @@ export default class StatisticsController {
   render() {
     this._statisticsComponent = new StatisticsComponent();
     render(this._container, this._statisticsComponent);
+    this._statisticsComponent.setFilterClickHander((evt) => {
+      console.log(evt.target.value);
+    });
   }
 
   show() {
