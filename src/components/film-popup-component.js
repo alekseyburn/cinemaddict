@@ -224,12 +224,14 @@ export default class FilmPopupComponent extends AbstractComponent {
       isMarkedAsWatched,
     } = options;
 
-    const watchlistCheckbox = this.getElement().querySelector(`#watchlist`);
-    const watchedCheckbox = this.getElement().querySelector(`#watched`);
-    const favoriteCheckbox = this.getElement().querySelector(`#favorite`);
-    watchlistCheckbox.checked = isAddedToWatchlist;
-    watchedCheckbox.checked = isMarkedAsWatched;
-    favoriteCheckbox.checked = isFavorite;
+    if (currentCommentEmoji === undefined && commentsCount === undefined) {
+      const watchlistCheckbox = this.getElement().querySelector(`#watchlist`);
+      const watchedCheckbox = this.getElement().querySelector(`#watched`);
+      const favoriteCheckbox = this.getElement().querySelector(`#favorite`);
+      watchlistCheckbox.checked = isAddedToWatchlist;
+      watchedCheckbox.checked = isMarkedAsWatched;
+      favoriteCheckbox.checked = isFavorite;
+    }
 
     if (currentCommentEmoji !== undefined) {
       this._currentCommentEmoji = currentCommentEmoji;
