@@ -170,18 +170,36 @@ export default class PageController {
     const filmsByRating = this._filmsModel.getAllFilms()
       .slice()
       .sort((filmA, filmB) => filmB.rating - filmA.rating);
-    this._renderFilms(
-        topRatedContainer,
-        filmsByRating.slice(0, 2)
-    );
+
+    if (filmsByRating[0].rating > 0) {
+      this._renderFilms(
+          topRatedContainer,
+          filmsByRating.slice(0, 1)
+      );
+    }
+    if (filmsByRating[1].rating > 0) {
+      this._renderFilms(
+          topRatedContainer,
+          filmsByRating.slice(1, 2)
+      );
+    }
 
     const filmsByCommentsNumber = this._filmsModel.getAllFilms()
       .slice()
       .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-    this._renderFilms(
-        mostCommentedContainer,
-        filmsByCommentsNumber.slice(0, 2)
-    );
+
+    if (filmsByCommentsNumber[0].comments.length > 0) {
+      this._renderFilms(
+          mostCommentedContainer,
+          filmsByCommentsNumber.slice(0, 1)
+      );
+    }
+    if (filmsByCommentsNumber[1].comments.length > 0) {
+      this._renderFilms(
+          mostCommentedContainer,
+          filmsByCommentsNumber.slice(1, 2)
+      );
+    }
   }
 
   _onSortTypeChange() {

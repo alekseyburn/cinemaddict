@@ -58,7 +58,7 @@ const getDurationMarkup = (films) => {
   }, 0);
 
   const duration = moment.duration(totalDuration, `minutes`);
-  const hours = duration.hours() ? duration.hours() : ``;
+  const hours = duration.hours();
   const minutes = duration.minutes();
 
   return (
