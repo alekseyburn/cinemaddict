@@ -2,6 +2,7 @@ import {createElement} from "../utils/dom";
 
 
 const HIDDEN_CLASS = `visually-hidden`;
+const SHAKE_ANIMATION_TIMEOUT = 600;
 
 
 export default class AbstractComponent {
@@ -34,6 +35,16 @@ export default class AbstractComponent {
   show() {
     if (this._element) {
       this._element.classList.remove(HIDDEN_CLASS);
+    }
+  }
+
+  shake() {
+    if (this.getElement()) {
+      this.getElement().classList.add(`shake`);
+
+      setTimeout(() => {
+        this.getElement().classList.remove(`shake`);
+      }, SHAKE_ANIMATION_TIMEOUT);
     }
   }
 
