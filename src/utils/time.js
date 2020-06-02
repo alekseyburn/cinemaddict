@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export const formatCommentDate = (date) => {
-  return moment(date).format(`YYYY/MM/DD hh:mm`);
+  return moment(date).fromNow();
 };
 
 

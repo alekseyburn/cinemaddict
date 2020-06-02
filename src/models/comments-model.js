@@ -6,7 +6,7 @@ export default class CommentsModel {
   }
 
   getComments() {
-    return this._comments;
+    return this._comments.sort((a, b) => a.date - b.date);
   }
 
   setComments(comments) {
