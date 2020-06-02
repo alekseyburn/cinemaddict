@@ -1,4 +1,4 @@
-import API from './api/index.js';
+import API from './api/api';
 import FilmsModel from './models/films-model';
 import PageController from './controllers/page-controller';
 import ProfileComponent from './components/profile-component';
