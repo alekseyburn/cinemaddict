@@ -4,7 +4,13 @@ import {
   formatRuntime,
 } from '../utils/time';
 
-import {EMOJI} from '../utils/const';
+
+export const EMOJI = [
+  `smile`,
+  `sleeping`,
+  `puke`,
+  `angry`,
+];
 
 
 const getGenresMarkup = (genres) => {

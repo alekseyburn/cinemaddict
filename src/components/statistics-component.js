@@ -1,12 +1,11 @@
 import AbstractSmartComponent from './abstract-smart-component';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {
-  getViewedMoviesCount
-} from '../utils/common';
+import {getViewedMoviesCount} from '../utils/common';
 import moment from 'moment';
 
-export const Range = {
+
+const Range = {
   ALL_TIME: {
     name: `all-time`,
     title: `All time`,
@@ -28,6 +27,9 @@ export const Range = {
     title: `Year`,
   },
 };
+
+const BAR_HEIGHT = 50;
+
 
 const getFiltersMarkup = (range) => {
   return Object.values(Range)
@@ -145,6 +147,7 @@ const getStatisticsMarkup = (films, range, userTitle) => {
   );
 };
 
+
 export default class StatisticsComponent extends AbstractSmartComponent {
   constructor(films, range, userTitle) {
     super();
@@ -183,7 +186,6 @@ export default class StatisticsComponent extends AbstractSmartComponent {
   }
 
   _renderChart(films) {
-    const BAR_HEIGHT = 50;
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
     const sortedGenresCount = getSortedGenresCount(films);
@@ -277,3 +279,5 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     return moment(date).isAfter(moment().subtract(1, `${range}s`));
   }
 }
+
+export {Range};
