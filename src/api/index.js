@@ -49,7 +49,7 @@ export default class API {
 
   removeComment(commentID) {
     return this._load({
-      url: `comments3/${commentID}`,
+      url: `comments/${commentID}`,
       method: Method.DELETE
     });
   }

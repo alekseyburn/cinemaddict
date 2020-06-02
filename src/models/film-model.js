@@ -53,15 +53,15 @@ export default class FilmModel {
     };
   }
 
-  static parseFilm(data) {
-    return new FilmModel(data);
+  static parseFilm(film) {
+    return new FilmModel(film);
   }
 
-  static parseFilms(data) {
-    return data.map(FilmModel.parseFilm);
+  static parseFilms(films) {
+    return films.map(FilmModel.parseFilm);
   }
 
-  static clone(data) {
-    return new FilmModel(data.toRAW());
+  static clone(film) {
+    return new FilmModel(film.toRAW());
   }
 }

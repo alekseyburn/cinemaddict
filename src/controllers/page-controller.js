@@ -7,9 +7,13 @@ import LoadMoreButtonComponent from '../components/load-more-component';
 import MainNavComponent from '../components/main-nav-component';
 import NoFilmsComponent from '../components/no-films-component';
 import SortComponent, {SortType} from '../components/sort-component';
-import StatisticsComponent from '../components/statistics-component';
+import StatisticsController from '../controllers/statistics-controller';
 
 import {render, remove} from '../utils/dom';
+import {
+  getUserTitle,
+  getViewedMoviesCount
+} from '../utils/common';
 
 
 const CARDS_ON_START_COUNT = 5;
@@ -40,15 +44,15 @@ export default class PageController {
     this._filmsModel = filmsModel;
     this._api = api;
 
-    this._shownFilmsControllers = [];
     this._cardsShownCount = CARDS_ON_START_COUNT;
+    this._shownFilmsControllers = [];
+    this._statisticsController = null;
 
     this._noFilmsComponent = new NoFilmsComponent();
     this._mainNavComponent = new MainNavComponent();
     this._sortComponent = new SortComponent();
     this._filmsMainComponent = new FilmsMainComponent();
     this._filmsListComponent = new FilmsListComponent();
-    this._statisticsComponent = new StatisticsComponent();
 
     this._filmsListContainer = null;
     this._loadMoreButtonComponent = new LoadMoreButtonComponent();
@@ -66,6 +70,9 @@ export default class PageController {
   render() {
     const films = this._filmsModel.getFilms();
 
+    this._updateUserTitle();
+    this._updateFooterStats();
+
     render(this._container, this._mainNavComponent);
     this._mainNavComponent.setNavItemClickHandler(this._mainNavClickHandler);
     const filtersController = new FilterController(
@@ -76,8 +83,13 @@ export default class PageController {
 
     render(this._container, this._sortComponent);
     render(this._container, this._filmsMainComponent);
-    render(this._container, this._statisticsComponent);
-    this._statisticsComponent.hide();
+
+    this._statisticsController = new StatisticsController(
+        this._container,
+        this._filmsModel
+    );
+    this._statisticsController.render();
+    this._statisticsController.hide();
 
     const filmsMainElement = this._filmsMainComponent.getElement();
     render(filmsMainElement, this._filmsListComponent);
@@ -158,18 +170,36 @@ export default class PageController {
     const filmsByRating = this._filmsModel.getAllFilms()
       .slice()
       .sort((filmA, filmB) => filmB.rating - filmA.rating);
-    this._renderFilms(
-        topRatedContainer,
-        filmsByRating.slice(0, 2)
-    );
+
+    if (filmsByRating[0].rating > 0) {
+      this._renderFilms(
+          topRatedContainer,
+          filmsByRating.slice(0, 1)
+      );
+    }
+    if (filmsByRating[1].rating > 0) {
+      this._renderFilms(
+          topRatedContainer,
+          filmsByRating.slice(1, 2)
+      );
+    }
 
     const filmsByCommentsNumber = this._filmsModel.getAllFilms()
       .slice()
       .sort((filmA, filmB) => filmB.comments.length - filmA.comments.length);
-    this._renderFilms(
-        mostCommentedContainer,
-        filmsByCommentsNumber.slice(0, 2)
-    );
+
+    if (filmsByCommentsNumber[0].comments.length > 0) {
+      this._renderFilms(
+          mostCommentedContainer,
+          filmsByCommentsNumber.slice(0, 1)
+      );
+    }
+    if (filmsByCommentsNumber[1].comments.length > 0) {
+      this._renderFilms(
+          mostCommentedContainer,
+          filmsByCommentsNumber.slice(1, 2)
+      );
+    }
   }
 
   _onSortTypeChange() {
@@ -209,6 +239,7 @@ export default class PageController {
         if (isSuccess) {
           if (isUpdateFilms) {
             this._updateFilms(this._cardsShownCount);
+            this._updateUserTitle();
           } else {
             filmController.setFilmData(this._filmsModel.getFilm(newData.id));
           }
@@ -226,13 +257,26 @@ export default class PageController {
 
   _mainNavClickHandler(navItem) {
     if (navItem === `stats`) {
-      this._statisticsComponent.show();
+      this._statisticsController.show();
       this._sortComponent.hide();
       this._filmsMainComponent.hide();
     } else {
-      this._statisticsComponent.hide();
+      this._statisticsController.hide();
       this._sortComponent.show();
       this._filmsMainComponent.show();
     }
+  }
+
+  _updateUserTitle() {
+    const profileRatingElement = document
+      .querySelector(`.profile__rating`);
+    const viewedMoviesCount = getViewedMoviesCount(this._filmsModel.getAllFilms());
+    profileRatingElement.innerHTML = getUserTitle(viewedMoviesCount);
+  }
+
+  _updateFooterStats() {
+    const footerStatsElement = document
+      .querySelector(`.footer__statistics`);
+    footerStatsElement.innerHTML = `${this._filmsModel.getAllFilms().length} movies inside`;
   }
 }

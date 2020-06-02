@@ -251,7 +251,7 @@ export default class FilmController {
           comment: message,
         });
 
-        this._onCommentsDataChange(null, newComment);
+        this._onCommentsDataChange(null, null, newComment);
       }
     }
   }
