@@ -52,15 +52,14 @@ const getFiltersMarkup = (range) => {
     }).join(``);
 };
 
-
 const getDurationMarkup = (films) => {
   const totalDuration = films.reduce((acc, film) => {
     return acc + film.runtime;
   }, 0);
 
   const duration = moment.duration(totalDuration, `minutes`);
-  const hours = duration.hours() ? `${duration.hours()}h` : ``;
-  const minutes = `${duration.minutes()}m`;
+  const hours = duration.hours() ? duration.hours() : ``;
+  const minutes = duration.minutes();
 
   return (
     `<p class="statistic__item-text">
@@ -72,11 +71,43 @@ const getDurationMarkup = (films) => {
   );
 };
 
+const getSortedGenresCount = (films) => {
+  if (films.length === 0) {
+    return null;
+  }
+
+  const genresToCount = films
+    .reduce((acc, film) => {
+      return acc.concat(film.genres);
+    }, [])
+    .reduce((acc, genre) => {
+      acc[genre] = (acc[genre] || 0) + 1;
+      return acc;
+    }, {});
+
+  const sortedGenresCount = Object.keys(genresToCount)
+    .map((key) => {
+      return {
+        genre: key,
+        count: genresToCount[key],
+      };
+    })
+    .sort((a, b) => {
+      return b.count - a.count;
+    });
+
+  return sortedGenresCount;
+};
+
 
 const getStatisticsMarkup = (films, range, userTitle) => {
   const filtersMarkup = getFiltersMarkup(range);
   const filmsWatched = getViewedMoviesCount(films);
   const durationMarkup = getDurationMarkup(films);
+
+  const sortedGenresCount = getSortedGenresCount(films);
+  const topGenre = films.length > 0 ? sortedGenresCount[0].genre : ``;
+
 
   return (
     `<section class="statistic">
@@ -102,7 +133,7 @@ const getStatisticsMarkup = (films, range, userTitle) => {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">Sci-Fi</p>
+          <p class="statistic__item-text">${topGenre}</p>
         </li>
       </ul>
 
@@ -138,6 +169,10 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     this._userTitle = userTitle;
 
     super.rerender();
+
+    if (this._films.length > 0) {
+      this._renderChart(this._films);
+    }
   }
 
   setFilterClickHander(handler) {
@@ -147,20 +182,23 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     this._filterClickHandler = handler;
   }
 
-  _renderChart() {
+  _renderChart(films) {
     const BAR_HEIGHT = 50;
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
-    // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
-    statisticCtx.height = BAR_HEIGHT * 5;
+    const sortedGenresCount = getSortedGenresCount(films);
+    const genres = sortedGenresCount.map((it) => it.genre);
+    const counts = sortedGenresCount.map((it) => it.count);
+
+    statisticCtx.height = BAR_HEIGHT * sortedGenresCount.length;
 
     return new Chart(statisticCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
-        labels: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`],
+        labels: genres,
         datasets: [{
-          data: [11, 8, 7, 4, 3],
+          data: counts,
           backgroundColor: `#ffe800`,
           hoverBackgroundColor: `#ffe800`,
           anchor: `start`
@@ -217,7 +255,7 @@ export default class StatisticsComponent extends AbstractSmartComponent {
       case Range.TODAY.name:
         return films.filter((film) => {
           return film.isMarkedAsWatched &&
-            (film.watchingDate.getDate() === new Date(Date.now()).getDate());
+            this._isToday(film.watchingDate);
         });
       case Range.WEEK.name:
       case Range.MONTH.name:
@@ -229,6 +267,10 @@ export default class StatisticsComponent extends AbstractSmartComponent {
       default:
         return films.filter((film) => film.isMarkedAsWatched);
     }
+  }
+
+  _isToday(date) {
+    return moment().isSame(moment(date), `day`);
   }
 
   _isDateInRange(date, range) {
