@@ -1,3 +1,9 @@
+export const RenderPlace = {
+  AFTER_BEGIN: `afterbegin`,
+  BEFORE_END: `beforeend`,
+};
+
+
 export const createElement = (markup) => {
   const container = document.createElement(`div`);
   container.innerHTML = markup;
@@ -11,7 +17,7 @@ export const remove = (component) => {
 };
 
 
-export const render = (parent, component, place = `beforeend`) =>
+export const render = (parent, component, place = RenderPlace.BEFORE_END) =>
   parent.insertAdjacentElement(place, component.getElement());
 
 
