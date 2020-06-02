@@ -13,6 +13,8 @@ const Mode = {
   POPUP: `popup`,
 };
 
+const UNABLE_TO_LOAD_COMMENTS_COUNT = -1;
+
 
 export default class FilmController {
   constructor(container, onDataChange, onViewChange, api) {
@@ -145,6 +147,11 @@ export default class FilmController {
       .then((comments) => {
         this._commentsModel.setComments(comments);
         this._renderComments(this._commentsModel.getComments());
+      })
+      .catch(() => {
+        this._filmPopupComponent.update({
+          commentsCount: UNABLE_TO_LOAD_COMMENTS_COUNT
+        });
       });
   }
 

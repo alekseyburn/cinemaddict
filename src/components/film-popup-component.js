@@ -10,6 +10,16 @@ export const EMOJI = [
 ];
 
 
+const getCommentsTitleMarkup = (count) => {
+  if (count < 0) {
+    return `Unable to load comments`;
+  }
+
+  return (
+    `Comments <span class="film-details__comments-count">${count}</span>`
+  );
+};
+
 const getGenresMarkup = (genres) => {
   return genres
     .map((genre) => `<span class="film-details__genre">${genre}</span>`)
@@ -151,7 +161,9 @@ const getFilmPopupMarkup = (film) => {
 
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
+            <h3 class="film-details__comments-title">
+              ${getCommentsTitleMarkup(comments.length)}
+            </h3>
 
             <ul class="film-details__comments-list">
             </ul>
@@ -234,9 +246,9 @@ export default class FilmPopupComponent extends AbstractComponent {
     }
 
     if (commentsCount !== undefined) {
-      const commentsCountElement = this.getElement()
-        .querySelector(`.film-details__comments-count`);
-      commentsCountElement.innerHTML = commentsCount;
+      const commentsCountTitleElement = this.getElement()
+        .querySelector(`.film-details__comments-title`);
+      commentsCountTitleElement.innerHTML = getCommentsTitleMarkup(commentsCount);
     }
   }
 
