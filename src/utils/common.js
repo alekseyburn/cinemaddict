@@ -5,9 +5,9 @@ export const getUserTitle = (moviesViewed) => {
     return `Novice`;
   } else if (moviesViewed > 10 && moviesViewed < 21) {
     return `Fan`;
-  } else {
-    return `Movie Buff`;
   }
+
+  return `Movie Buff`;
 };
 
 export const getViewedMoviesCount = (films) => {

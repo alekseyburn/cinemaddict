@@ -4,12 +4,9 @@ import CommentsModel from '../models/comments-model';
 import CommentController from './comment-controller';
 import FilmModel from '../models/film-model';
 import {render, remove, replace} from '../utils/dom';
-import {getRandomFullName} from '../utils/random';
 import {encode} from 'he';
 import CommentModel from '../models/comment-model';
 
-
-const SHAKE_ANIMATION_TIMEOUT = 600;
 
 const Mode = {
   DEFAULT: `default`,
@@ -99,17 +96,12 @@ export default class FilmController {
   }
 
   shake() {
-    this._filmCardComponent
-      .getElement().classList.add(`shake`);
-    this._filmPopupComponent
-      .getElement().classList.add(`shake`);
-
-    setTimeout(() => {
-      this._filmCardComponent
-        .getElement().classList.remove(`shake`);
-      this._filmPopupComponent
-        .getElement().classList.remove(`shake`);
-    }, SHAKE_ANIMATION_TIMEOUT);
+    if (this._filmCardComponent) {
+      this._filmCardComponent.shake();
+    }
+    if (this._filmPopupComponent) {
+      this._filmPopupComponent.shake();
+    }
   }
 
   _renderFilmPopup() {
@@ -212,17 +204,15 @@ export default class FilmController {
     } else {
       this._filmPopupComponent.blockInput();
       this._api.addComment(this._filmData.id, newComment)
-        .then(() => {
-          const isCommentAdded = this._commentsModel.addComment(newComment);
+        .then((comments) => {
+          this._commentsModel.setComments(comments);
+          this._updateComments();
 
-          if (isCommentAdded) {
-            this._updateComments();
-            this._filmPopupComponent.update({
-              commentsCount: this._commentsModel.getComments().length,
-              currentCommentEmoji: null
-            });
-            this._filmPopupComponent.unblockInput(false);
-          }
+          this._filmPopupComponent.update({
+            commentsCount: this._commentsModel.getComments().length,
+            currentCommentEmoji: null
+          });
+          this._filmPopupComponent.unblockInput(false);
         })
         .catch(() => {
           this.shake();
@@ -244,8 +234,6 @@ export default class FilmController {
 
       if (message && emotion) {
         const newComment = new CommentModel({
-          id: String(new Date() + Math.random()),
-          author: getRandomFullName(),
           date: new Date(Date.now()),
           emotion,
           comment: message,

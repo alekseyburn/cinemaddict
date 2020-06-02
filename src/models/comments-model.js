@@ -6,23 +6,11 @@ export default class CommentsModel {
   }
 
   getComments() {
-    return this._comments;
+    return this._comments.sort((a, b) => a.date - b.date);
   }
 
   setComments(comments) {
     this._comments = Array.from(comments);
-  }
-
-  addComment(comment) {
-    if (!comment) {
-      return false;
-    }
-
-    this._comments = [].concat(this._comments, comment);
-
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
   }
 
   removeComment(id) {
@@ -41,11 +29,11 @@ export default class CommentsModel {
     return true;
   }
 
-  setDataChangeHandler(handler) {
-    this._dataChangeHandlers.push(handler);
-  }
-
   _callHandlers(handlers) {
     handlers.forEach((handler) => handler());
+  }
+
+  setDataChangeHandler(handler) {
+    this._dataChangeHandlers.push(handler);
   }
 }

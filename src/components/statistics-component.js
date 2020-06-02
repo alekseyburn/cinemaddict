@@ -1,12 +1,11 @@
 import AbstractSmartComponent from './abstract-smart-component';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {
-  getViewedMoviesCount
-} from '../utils/common';
+import {getViewedMoviesCount} from '../utils/common';
 import moment from 'moment';
 
-export const Range = {
+
+const Range = {
   ALL_TIME: {
     name: `all-time`,
     title: `All time`,
@@ -28,6 +27,28 @@ export const Range = {
     title: `Year`,
   },
 };
+
+const ChartConfig = {
+  BAR_HEIGHT: 50,
+  TYPE: `horizontalBar`,
+  DATA_BACKGROUND_COLOR: `#ffe800`,
+  DATA_HOVER_BACKGROUND_COLOR: `#ffe800`,
+  DATA_ANCHOR: `start`,
+  DATALABELS_FONT_SIZE: 20,
+  DATALABELS_COLOR: `#ffffff`,
+  DATALABELS_ANCHOR: `start`,
+  DATALABELS_ALIGN: `start`,
+  DATALABELS_OFFSET: 40,
+  SCALE_Y_FONT_COLOR: `#ffffff`,
+  SCALE_Y_PADDING: 100,
+  SCALE_Y_FONT_SIZE: 20,
+  SCALE_Y_BAR_THICKNESS: 24,
+  IS_SCALE_X_DISPLAY_TICKS: false,
+  IS_SCALE_X_BEGIN_AT_ZERO: true,
+  IS_LEGEND_DISPLAY: false,
+  IS_TOOLTIPS_ENABLED: false,
+};
+
 
 const getFiltersMarkup = (range) => {
   return Object.values(Range)
@@ -145,6 +166,7 @@ const getStatisticsMarkup = (films, range, userTitle) => {
   );
 };
 
+
 export default class StatisticsComponent extends AbstractSmartComponent {
   constructor(films, range, userTitle) {
     super();
@@ -175,76 +197,60 @@ export default class StatisticsComponent extends AbstractSmartComponent {
     }
   }
 
-  setFilterClickHander(handler) {
-    this.getElement().querySelector(`.statistic__filters`)
-      .addEventListener(`input`, handler);
-
-    this._filterClickHandler = handler;
-  }
-
   _renderChart(films) {
-    const BAR_HEIGHT = 50;
     const statisticCtx = document.querySelector(`.statistic__chart`);
 
     const sortedGenresCount = getSortedGenresCount(films);
     const genres = sortedGenresCount.map((it) => it.genre);
     const counts = sortedGenresCount.map((it) => it.count);
 
-    statisticCtx.height = BAR_HEIGHT * sortedGenresCount.length;
+    statisticCtx.height = ChartConfig.BAR_HEIGHT * sortedGenresCount.length;
 
     return new Chart(statisticCtx, {
       plugins: [ChartDataLabels],
-      type: `horizontalBar`,
+      type: ChartConfig.TYPE,
       data: {
         labels: genres,
         datasets: [{
           data: counts,
-          backgroundColor: `#ffe800`,
-          hoverBackgroundColor: `#ffe800`,
-          anchor: `start`
+          backgroundColor: ChartConfig.DATA_BACKGROUND_COLOR,
+          hoverBackgroundColor: ChartConfig.DATA_HOVER_BACKGROUND_COLOR,
+          anchor: ChartConfig.DATA_ANCHOR
         }]
       },
       options: {
         plugins: {
           datalabels: {
             font: {
-              size: 20
+              size: ChartConfig.DATALABELS_FONT_SIZE,
             },
-            color: `#ffffff`,
-            anchor: `start`,
-            align: `start`,
-            offset: 40,
+            color: ChartConfig.DATALABELS_COLOR,
+            anchor: ChartConfig.DATALABELS_ANCHOR,
+            align: ChartConfig.DATALABELS_ALIGN,
+            offset: ChartConfig.DATALABELS_OFFSET,
           }
         },
         scales: {
           yAxes: [{
             ticks: {
-              fontColor: `#ffffff`,
-              padding: 100,
-              fontSize: 20
+              fontColor: ChartConfig.SCALE_Y_FONT_COLOR,
+              padding: ChartConfig.SCALE_Y_PADDING,
+              fontSize: ChartConfig.SCALE_Y_FONT_SIZE,
             },
-            gridLines: {
-              display: false,
-              drawBorder: false
-            },
-            barThickness: 24
+            barThickness: ChartConfig.SCALE_Y_BAR_THICKNESS,
           }],
           xAxes: [{
             ticks: {
-              display: false,
-              beginAtZero: true
-            },
-            gridLines: {
-              display: false,
-              drawBorder: false
+              display: ChartConfig.IS_SCALE_X_DISPLAY_TICKS,
+              beginAtZero: ChartConfig.IS_SCALE_X_BEGIN_AT_ZERO
             },
           }],
         },
         legend: {
-          display: false
+          display: ChartConfig.IS_LEGEND_DISPLAY
         },
         tooltips: {
-          enabled: false
+          enabled: ChartConfig.IS_TOOLTIPS_ENABLED
         }
       }
     });
@@ -276,4 +282,13 @@ export default class StatisticsComponent extends AbstractSmartComponent {
   _isDateInRange(date, range) {
     return moment(date).isAfter(moment().subtract(1, `${range}s`));
   }
+
+  setFilterClickHander(handler) {
+    this.getElement().querySelector(`.statistic__filters`)
+      .addEventListener(`input`, handler);
+
+    this._filterClickHandler = handler;
+  }
 }
+
+export {Range};

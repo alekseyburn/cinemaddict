@@ -38,12 +38,6 @@ export default class CommentComponent extends AbstractComponent {
     return getCommentMarkup(this._comment);
   }
 
-  setDeleteButtonClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.film-details__comment-delete`)
-      .addEventListener(`click`, handler);
-  }
-
   startDeleting() {
     const deleteButton = this.getElement()
       .querySelector(`.film-details__comment-delete`);
@@ -56,5 +50,11 @@ export default class CommentComponent extends AbstractComponent {
     .querySelector(`.film-details__comment-delete`);
     deleteButton.innerHTML = `Delete`;
     deleteButton.disabled = false;
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.film-details__comment-delete`)
+      .addEventListener(`click`, handler);
   }
 }

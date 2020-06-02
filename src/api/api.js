@@ -9,12 +9,13 @@ const Method = {
   DELETE: `DELETE`,
 };
 
+
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
   }
+
+  throw new Error(`${response.status}: ${response.statusText}`);
 };
 
 
@@ -22,6 +23,30 @@ export default class API {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
+  }
+
+  addComment(filmID, commentData) {
+    return this._load({
+      url: `comments/${filmID}`,
+      method: Method.POST,
+      body: JSON.stringify(commentData.toRAW()),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then((response) => response.json())
+      .then((jsonData) => CommentModel.parseComments(jsonData.comments));
+  }
+
+  getComments(filmID) {
+    return this._load({url: `comments/${filmID}`})
+      .then((response) => response.json())
+      .then(CommentModel.parseComments);
+  }
+
+  removeComment(commentID) {
+    return this._load({
+      url: `comments/${commentID}`,
+      method: Method.DELETE
+    });
   }
 
   getFilms() {
@@ -39,28 +64,6 @@ export default class API {
     })
       .then((response) => response.json())
       .then(FilmModel.parseFilm);
-  }
-
-  getComments(filmID) {
-    return this._load({url: `comments/${filmID}`})
-      .then((response) => response.json())
-      .then(CommentModel.parseComments);
-  }
-
-  removeComment(commentID) {
-    return this._load({
-      url: `comments/${commentID}`,
-      method: Method.DELETE
-    });
-  }
-
-  addComment(filmID, commentData) {
-    return this._load({
-      url: `comments/${filmID}`,
-      method: Method.POST,
-      body: JSON.stringify(commentData.toRAW()),
-      headers: new Headers({"Content-Type": `application/json`})
-    });
   }
 
   _load({

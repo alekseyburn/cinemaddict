@@ -1,5 +1,7 @@
-export const render = (parent, component, place = `beforeend`) =>
-  parent.insertAdjacentElement(place, component.getElement());
+export const RenderPlace = {
+  AFTER_BEGIN: `afterbegin`,
+  BEFORE_END: `beforeend`,
+};
 
 
 export const createElement = (markup) => {
@@ -13,6 +15,10 @@ export const remove = (component) => {
   component.getElement().remove();
   component.removeElement();
 };
+
+
+export const render = (parent, component, place = RenderPlace.BEFORE_END) =>
+  parent.insertAdjacentElement(place, component.getElement());
 
 
 export const replace = (newComponent, oldComponent) => {

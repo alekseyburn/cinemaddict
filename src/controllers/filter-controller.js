@@ -1,6 +1,6 @@
 import FilterComponent from '../components/filter-component';
 import {FilterType, FilterTitle, getFilmsByFilter} from '../utils/filter';
-import {render, replace} from '../utils/dom';
+import {render, replace, RenderPlace} from '../utils/dom';
 
 
 export default class FilterController {
@@ -36,7 +36,7 @@ export default class FilterController {
     if (oldComponent) {
       replace(this._filterComponent, oldComponent);
     } else {
-      render(this._container, this._filterComponent, `afterbegin`);
+      render(this._container, this._filterComponent, RenderPlace.AFTER_BEGIN);
     }
   }
 

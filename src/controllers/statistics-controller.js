@@ -1,9 +1,6 @@
 import StatisticsComponent, {Range} from '../components/statistics-component';
 import {render} from '../utils/dom';
-import {
-  getUserTitle,
-  getViewedMoviesCount
-} from '../utils/common';
+import {getUserTitle, getViewedMoviesCount} from '../utils/common';
 
 
 export default class StatisticsController {

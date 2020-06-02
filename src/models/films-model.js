@@ -49,15 +49,15 @@ export default class FilmsModel {
     return true;
   }
 
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => handler());
+  }
+
   setDataChangeHandler(handler) {
     this._dataChangeHandlers.push(handler);
   }
 
   setFilterChangeHandler(handler) {
     this._filterChangeHandlers.push(handler);
-  }
-
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
   }
 }
