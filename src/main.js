@@ -9,10 +9,13 @@ import {render} from './utils/dom';
 
 const AUTHORIZATION = `Basic k5duwggfc7`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+const STORE_PREFIX = `taskmanager-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 
 const api = new API(END_POINT, AUTHORIZATION);
-const store = new Store();
+const store = new Store(STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, store);
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -37,4 +40,14 @@ apiWithProvider.getFilms()
 
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`/sw.js`);
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+
+  // apiWithProvider.sync();
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

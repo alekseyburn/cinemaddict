@@ -1,5 +1,4 @@
 import FilmModel from '../models/film-model';
-import CommentModel from '../models/comment-model';
 
 
 const checkOnline = () => {
@@ -39,20 +38,39 @@ export default class Provider {
 
   getFilms() {
     if (checkOnline()) {
-      return this._api.getFilms();
-        // .then((films) => {
+      return this._api.getFilms()
+        .then((films) => {
+          const items = films.reduce((acc, current) => {
+            return Object.assign({}, acc, {
+              [current.id]: current.toRAW(),
+            });
+          }, {});
 
-        // })
+          this._store.setItems(items);
+
+          return films;
+        });
     }
 
-    return Promise.reject(`offline behavior is not implemented`);
+    const storeFilms = Object.values(this._store.getItems());
+
+    return Promise.resolve(FilmModel.parseFilms(storeFilms));
   }
 
-  updateFilm(id, data) {
+  updateFilm(id, film) {
     if (checkOnline()) {
-      return this._api.updateFilm(id, data);
+      return this._api.updateFilm(id, film)
+        .then((newFilm) => {
+          this._store.setItem(newFilm.id, newFilm.toRAW);
+
+          return newFilm;
+        });
     }
 
-    return Promise.reject(`offline behavior is not implemented`);
+    const localFilm = FilmModel.clone(Object.assign(film, {id}));
+
+    this._store.setItem(id, localFilm.toRAW());
+
+    return Promise.resolve(localFilm);
   }
 }
