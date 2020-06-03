@@ -1,4 +1,6 @@
 import API from './api/api';
+import Provider from './api/provider';
+import Store from './api/store';
 import FilmsModel from './models/films-model';
 import PageController from './controllers/page-controller';
 import ProfileComponent from './components/profile-component';
@@ -10,16 +12,18 @@ const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 
 const api = new API(END_POINT, AUTHORIZATION);
+const store = new Store();
+const apiWithProvider = new Provider(api, store);
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 mainElement.innerHTML = `<h2 class="films-list__title">Loading...</h2>`;
 const filmsModel = new FilmsModel();
-const pageController = new PageController(mainElement, filmsModel, api);
+const pageController = new PageController(mainElement, filmsModel, apiWithProvider);
 
 
 render(headerElement, new ProfileComponent());
 
-api.getFilms()
+apiWithProvider.getFilms()
   .then((films) => {
     mainElement.innerHTML = ``;
     filmsModel.setFilms(films);
