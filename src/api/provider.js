@@ -39,10 +39,10 @@ export default class Provider {
 
   getFilms() {
     if (checkOnline()) {
-      return this._api.getFilms()
-        .then((films) => {
+      return this._api.getFilms();
+        // .then((films) => {
 
-        })
+        // })
     }
 
     return Promise.reject(`offline behavior is not implemented`);

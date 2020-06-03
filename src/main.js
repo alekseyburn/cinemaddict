@@ -33,3 +33,8 @@ apiWithProvider.getFilms()
     mainElement.innerHTML = ``;
     pageController.render([]);
   });
+
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`);
+});
